@@ -2,21 +2,21 @@
 
 A desktop Library Management System built with Python and CustomTkinter.
 
-## Features
+## ✨ Features
 
-- Add books
-- Edit book information
-- Delete books
-- Borrow books
-- Return books
-- Search books
-- Sort by:
+- ➕ Add new books
+- ✏️ Edit existing books
+- 🗑️ Delete books with confirmation
+- 📖 Borrow books
+- 📗 Return borrowed books
+- 🔍 Live search
+- 🔃 Sort books by:
   - Title
   - Author
   - Year
   - Pages
   - Availability
-- Persistent JSON storage
+- 💾 Automatic JSON data storage
 
 ## Technologies
 
@@ -24,4 +24,23 @@ A desktop Library Management System built with Python and CustomTkinter.
 - CustomTkinter
 - JSON
 
-## Project Structure
+## Screenshots
+
+![alt text](<Main Mode.png>)
+![alt text](<Borrow Mode.png>) 
+![alt text](<Edit Mode.png>) 
+
+
+## How to Run
+
+Install CustomTkinter:
+
+```bash
+pip install customtkinter
+```
+
+Run the application:
+
+```bash
+python main.py
+```
