@@ -1,1 +1,6 @@
-Test Run.py
+__pycache__/
+*.pyc
+*.json.bak
+.vscode/
+.idea/
+data/Book_record.json
