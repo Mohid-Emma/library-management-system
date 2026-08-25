@@ -16,13 +16,13 @@ A desktop Library Management System built with Python and CustomTkinter.
   - Year
   - Pages
   - Availability
-- 💾 Automatic JSON data storage
+- 💾 Automatic Sqlite3 data storage
 
 ## Technologies
 
 - Python 3.14
 - CustomTkinter
-- JSON
+- Sqlite3
 
 ## Screenshots
 
