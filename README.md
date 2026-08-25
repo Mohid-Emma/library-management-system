@@ -26,8 +26,8 @@ A desktop Library Management System built with Python and CustomTkinter.
 
 ## Screenshots
 
-![alt text](<Image/Main Mode.png>)
-![alt text](<Image/Borrow Mode.png>) 
+![alt text](<Image/Main Window.png>)
+![alt text](<Image/Borrow Window.png>) 
 ![alt text](<Image/Edit Mode.png>) 
 
 
