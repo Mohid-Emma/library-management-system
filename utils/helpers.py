@@ -1,6 +1,7 @@
 #helper.py
 from pathlib import Path
 from tkinter import messagebox
+from models  import Book
 
 def check_integer(value: str, field: str="Value") -> int | None:
     try:
@@ -12,6 +13,7 @@ def check_integer(value: str, field: str="Value") -> int | None:
 
 def file_location() -> Path:
     BASE_DIR = Path(__file__).resolve().parent.parent
-    data_dir = BASE_DIR / "data"
-    data_dir.mkdir(parents=True, exist_ok=True)
-    return data_dir / "Book_record.json"
+    return BASE_DIR / "database" /"library.db"
+    
+def check_for_borrower(book: Book) -> str | None:
+    return book.borrower.name if book.borrower else None

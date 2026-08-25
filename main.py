@@ -1,8 +1,12 @@
 #main.py
-from gui.app import LibraryApp
+
+from gui      import LibraryApp
+from database import Database
 
 def main():
-    app = LibraryApp()
+    db  = Database()
+    db.create_table()
+    app = LibraryApp(db)
     app.mainloop()
 
 if __name__ == "__main__":
