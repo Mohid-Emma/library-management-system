@@ -1,9 +1,9 @@
 #book_form.py
 
-import customtkinter as ctk
-from   models  import Book
-from   utils   import check_integer
-from   tkinter import messagebox
+import customtkinter as     ctk
+from   models        import Book
+from   tkinter       import messagebox
+from   utils         import check_integer
 
 class BookForm(ctk.CTkFrame):
     def __init__(self, master):
@@ -16,16 +16,19 @@ class BookForm(ctk.CTkFrame):
         self.available_checkbox = ctk.CTkCheckBox(self, text="Available", font=("Helvetica", 18), fg_color="green", hover_color="green")
         self.available_checkbox.pack(padx=15, pady=15, expand="True")
 
+    # =============================================================
+    # Entry Creation
+    # =============================================================
+
     def create_entry(self, placeholder):
 
-        entry = ctk.CTkEntry(
-            self,
-            placeholder_text= placeholder,
-            font=("Helvetica", 15), 
-            corner_radius=10)
-        
+        entry = ctk.CTkEntry(self, placeholder_text= placeholder, font=("Helvetica", 15), corner_radius=10)
         entry.pack(padx=20, pady=20, expand="True", fill="both")
         return entry
+
+    # =============================================================
+    # Entry Creation
+    # =============================================================
 
     def clear_entries(self):
 
@@ -38,12 +41,20 @@ class BookForm(ctk.CTkFrame):
             entry.delete(0, "end")
         self.available_checkbox.deselect()
 
+    # =============================================================
+    # Fill the Entries with Book's Data
+    # =============================================================
+
     def fill_entries(self, book):
 
         self.title_entry.insert(0, book.title)
         self.author_entry.insert(0, book.author)
         self.pages_entry.insert(0, str(book.pages))
         self.year_entry.insert(0, str(book.year))
+
+    # =============================================================
+    # Get Book's Data from User
+    # =============================================================
 
     def get_book(self):
 
@@ -61,6 +72,10 @@ class BookForm(ctk.CTkFrame):
             messagebox.showerror("Invalid Input" ,str(error))
             return
         return book
+
+    # =============================================================
+    # Disable/ Able of Checkbox During Edit Mode
+    # =============================================================
 
     def set_edit_mode(self, mode):
         if mode:

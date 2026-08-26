@@ -8,5 +8,9 @@ class StatusBar(ctk.CTkFrame):
         self.status_label = ctk.CTkLabel(self, text="🟢 Ready", anchor="w")
         self.status_label.pack(fill="x", padx=10)
 
+    # =============================================================
+    # Display Currrent Action
+    # =============================================================
+
     def set_status(self, message):
         self.status_label.configure(text= message)

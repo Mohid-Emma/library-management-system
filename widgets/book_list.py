@@ -7,11 +7,19 @@ class BookList(ctk.CTkScrollableFrame):
     def __init__(self, master):
             super().__init__(master, label_text="Books in Library", label_font=("Helvetica", 24, "bold"), corner_radius= 20, label_anchor="center")
 
+    # =============================================================
+    # Assignation Function to Variable
+    # =============================================================
+
     def set_callbacks(self, on_edit, on_delete, on_return, on_borrow):
         self.on_edit   = on_edit
         self.on_delete = on_delete
         self.on_return = on_return
         self.on_borrow = on_borrow
+
+    # =============================================================
+    # Book Display
+    # =============================================================
 
     def display_books(self, books):
         self.clear()
@@ -28,9 +36,17 @@ class BookList(ctk.CTkScrollableFrame):
                 self.on_borrow 
                 ).pack(padx=20, pady=20, expand="True", fill="both")
 
+    # =============================================================
+    # Destroy of Book Display
+    # =============================================================
+
     def clear(self):
         for widget in self.winfo_children():
             widget.destroy()
+
+    # =============================================================
+    # Display When Library is Empty
+    # =============================================================
 
     def show_empty_message(self):
         ctk.CTkLabel(self, text="No books available.").pack(pady=20)

@@ -3,6 +3,10 @@
 from gui      import LibraryApp
 from database import Database
 
+# =============================================================
+#  Program Initiallization
+# =============================================================
+
 def main():
     db  = Database()
     db.create_table()

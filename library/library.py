@@ -6,11 +6,18 @@ class Library:
         self.books : list[Book] = []
         self.db = db
 
+    # =============================================================
+    # Book Find
+    # =============================================================
+
     def find_book(self, title : str) -> Book | None:
         for book in self.books:
             if book.title.casefold() == title.casefold():
                 return book
         return None
+    # =============================================================
+    # Book Addition
+    # =============================================================
 
     def add_book(self, book : Book) -> bool:
         if self.find_book(book.title):
@@ -19,6 +26,10 @@ class Library:
         self.db.add_book(book)
         return True
 
+    # =============================================================
+    # Book Delection
+    # =============================================================
+
     def delete_book(self, book : Book):
         if book in self.books:
             self.books.remove(book)
@@ -26,11 +37,18 @@ class Library:
             return True
         return False
 
+    # =============================================================
+    # Book Borrow
+    # =============================================================
+
     def borrow_book(self, book: Book, borrower: Borrower) -> bool:
-        if book.borrow(borrower):
+        if book.borrow_name(borrower):
             self.db.borrow_book(book)
             return True
         return False
+    # =============================================================
+    # Book Retuen
+    # =============================================================
 
     def return_book(self, book: Book):
         if book.return_book():
@@ -38,8 +56,16 @@ class Library:
             return True
         return False
 
+    # =============================================================
+    # Loading Book's Data
+    # =============================================================
+
     def load(self) -> None:
         self.books =  self.db.get_books()
+
+    # =============================================================
+    # Book's Update
+    # =============================================================
 
     def update_book(self, book: Book):
         self.db.update_book(book)

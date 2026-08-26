@@ -7,9 +7,17 @@ class ToolBar(ctk.CTkFrame):
 
         self.create_widgets()
 
+    # =============================================================
+    # Assignation Function to Variable
+    # =============================================================
+
     def set_callbacks(self, on_search, on_sort):
         self.on_search = on_search
         self.on_sort   = on_sort
+
+    # =============================================================
+    # Widget Creation
+    # =============================================================
 
     def create_widgets(self):
 
@@ -22,9 +30,17 @@ class ToolBar(ctk.CTkFrame):
         self.sort_menu = ctk.CTkOptionMenu(self, values=sorted_option, command=self.on_sort_changed)
         self.sort_menu.pack(padx=5, pady=5, side="left")
 
+    # =============================================================
+    # Search for Book
+    # =============================================================
+
     def on_search_changed(self, _):
         query = self.search_entry.get().strip().lower()
         self.on_search(query)
+
+    # =============================================================
+    # Book Sort
+    # =============================================================
 
     def on_sort_changed(self, choice):
         self.on_sort(choice)

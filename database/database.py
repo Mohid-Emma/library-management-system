@@ -11,6 +11,10 @@ class Database:
         self.connection = sqlite3.connect(DB_PATH)
         self.cursor = self.connection.cursor()
 
+    # =============================================================
+    # Table Creation If not Exist
+    # =============================================================
+
     def create_table(self):
         self.cursor.execute(""" CREATE TABLE IF NOT EXISTS books(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -22,6 +26,10 @@ class Database:
             borrower_name TEXT )""")
         self.connection.commit()
 
+    # =============================================================
+    # Book Addition
+    # =============================================================
+
     def add_book(self, book: Book):
         borrower_name = check_for_borrower(book)
         self.cursor.execute(""" INSERT INTO books 
@@ -30,6 +38,10 @@ class Database:
         (book.title, book.author, book.pages, book.year, int(book.available), borrower_name))
         self.connection.commit()
         book.book_id = self.cursor.lastrowid
+
+    # =============================================================
+    # Fetch All Books
+    # =============================================================
 
     def get_books(self) -> list[Book]:
         self.cursor.execute("""SELECT * FROM books""")
@@ -43,9 +55,17 @@ class Database:
             books.append(book)
         return books
 
+    # =============================================================
+    # Book Delection
+    # =============================================================
+
     def delete_book(self, book: Book):
         self.cursor.execute("DELETE FROM books Where id=?", (book.book_id,))
         self.connection.commit()
+
+    # =============================================================
+    # Book Update
+    # =============================================================
 
     def update_book(self, book: Book):
         borrower_name = check_for_borrower(book)
@@ -54,6 +74,10 @@ class Database:
         (book.title, book.author, book.pages, book.year, int(book.available), borrower_name, book.book_id,))
         self.connection.commit()
 
+    # =============================================================
+    # Book Borrow
+    # =============================================================
+
     def borrow_book(self, book: Book):
         borrower_name = check_for_borrower(book)
         self.cursor.execute(""" UPDATE books 
@@ -61,12 +85,20 @@ class Database:
         (int(book.available), borrower_name, book.book_id,))
         self.connection.commit()
 
+    # =============================================================
+    # Book Return
+    # =============================================================
+
     def return_book(self, book: Book):
         borrower_name = check_for_borrower(book)
         self.cursor.execute(""" UPDATE books 
         SET available=?, borrower_name=? Where id=?""",
         (int(book.available), borrower_name, book.book_id,))
         self.connection.commit()
+
+    # =============================================================
+    # Database Close
+    # =============================================================
 
     def close(self):
         self.connection.close()

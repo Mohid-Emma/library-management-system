@@ -13,6 +13,10 @@ class BookCard(ctk.CTkFrame):
 
         self.create_widgets()
 
+    # =============================================================
+    # Widget Creation
+    # =============================================================
+
     def create_widgets(self):
         
         self.create_label(f"Title : {self.book.title}" , font=("Helvetica", 20, "bold"))
@@ -42,8 +46,16 @@ class BookCard(ctk.CTkFrame):
         else:
             borrow_btn.configure(state="disabled") 
 
+    # =============================================================
+    # Label creation
+    # =============================================================
+
     def create_label(self, text, **kwargs):
         ctk.CTkLabel(self, text= text, **kwargs).pack(padx=5, pady=5, anchor="w")
+
+    # =============================================================
+    # Button Creation
+    # =============================================================
 
     def create_button(self, parent, text, command, column):
         button = ctk.CTkButton(parent, text=text, command=command, corner_radius=20, font=("Helvetica", 12))
