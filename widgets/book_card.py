@@ -19,16 +19,16 @@ class BookCard(ctk.CTkFrame):
 
     def create_widgets(self):
         
-        self.create_label(f"Title : {self.book.title}" , font=("Helvetica", 20, "bold"))
-        self.create_label(f"Author: {self.book.author}", font=("Helvetica", 15))
-        self.create_label(f"Pages : {self.book.pages}" , font=("Helvetica", 15))
-        self.create_label(f"Year  : {self.book.year}"  , font=("Helvetica", 15))
+        self.create_label(f"Title : {self.book.title}" , font=("Segoe UI", 20, "bold"))
+        self.create_label(f"Author: {self.book.author}", font=("Segoe UI", 15))
+        self.create_label(f"Pages : {self.book.pages}" , font=("Segoe UI", 15))
+        self.create_label(f"Year  : {self.book.year}"  , font=("Segoe UI", 15))
 
         if self.book.borrower:
             status = f"Borrowed by {self.book.borrower}"
         else:
             status = "Available"
-        ctk.CTkLabel(self,text=f"Status: {status}", font=("Helvetica", 15)).pack(padx=5, pady=5, anchor="w")
+        ctk.CTkLabel(self,text=f"Status: {status}", font=("Segoe UI", 15)).pack(padx=5, pady=5, anchor="w")
 
         button_frame = ctk.CTkFrame(self, fg_color="transparent")
         button_frame.pack(padx=5, pady=5)
@@ -58,7 +58,7 @@ class BookCard(ctk.CTkFrame):
     # =============================================================
 
     def create_button(self, parent, text, command, column):
-        button = ctk.CTkButton(parent, text=text, command=command, corner_radius=20, font=("Helvetica", 12))
+        button = ctk.CTkButton(parent, text=text, command=command, corner_radius=20, font=("Segoe UI", 12))
         button.grid(row = 0, column = column, sticky="news", padx=10, pady=5)
         return button
     

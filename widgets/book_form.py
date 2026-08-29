@@ -27,7 +27,6 @@ class BookForm(ctk.CTkFrame):
         entry = ctk.CTkEntry(
             master           = self, 
             placeholder_text = placeholder,
-            height        = 45,
             corner_radius = 10,
             fg_color      = theme.transparent,
             text_color    = theme.text,
@@ -78,7 +77,7 @@ class BookForm(ctk.CTkFrame):
         try:
             book = Book(title, author, pages, year, available)
         except ValueError as error:
-            messagebox.showerror("Invalid Input" ,str(error))
+            messagebox.showerror("Invalid Input" ,str(error)+" "*100)
             return
         return book
 

@@ -22,7 +22,7 @@ class ToolBar(ctk.CTkFrame):
 
     def create_widgets(self):
 
-        self.search_entry = ctk.CTkEntry(self, placeholder_text="Search books...", font=("Helvetica", 15), corner_radius=10)
+        self.search_entry = ctk.CTkEntry(self, placeholder_text="Search books...", font=("Segoe UI", 15), corner_radius=10)
         self.search_entry.pack(padx=10, pady=20, expand="True", fill="both", side="left")
 
         self.search_entry.bind("<KeyRelease>", self.on_search_changed)

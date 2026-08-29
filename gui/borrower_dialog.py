@@ -43,7 +43,7 @@ class BorrowerDialog(ctk.CTkToplevel):
     # =============================================================
 
     def create_label(self):
-        self.book_label = ctk.CTkLabel(self.main, text = f"Title: {self.book_title}", font=("Arial", 27, "bold"))
+        self.book_label = ctk.CTkLabel(self.main, text = f"Title: {self.book_title}", font=("Segoe UI", 27, "bold"))
         self.book_label.pack(pady=20)
 
     # =============================================================
@@ -79,7 +79,7 @@ class BorrowerDialog(ctk.CTkToplevel):
         try:
             self.result = Borrower(name)
         except ValueError as error:
-            messagebox.showerror("Invalid Input", str(error))
+            messagebox.showerror("Invalid Input", str(error)+" "*20)
             return 
         self.destroy()
 

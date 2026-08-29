@@ -12,7 +12,7 @@ def check_integer(value: str, field: str="Value") -> int | None:
     try:
         return int(value)
     except ValueError:
-        messagebox.showerror("Invalid Input", f"{field} must be an integer number")
+        messagebox.showerror("Invalid Input", f"{field} must be an integer number\n"+" "*100)
         return None 
 
     # =============================================================

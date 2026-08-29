@@ -106,7 +106,7 @@ class Controller:
     def delete_book(self, book):
         self.cancel_edit()
     
-        if not messagebox.askyesno("Delete Book", f" Delete '{book.title}'?"+ " "*30):
+        if not messagebox.askyesno("Delete Book", f" Delete '{book.title}'?\n"+" "*100):
             return
         if self.library.delete_book(book):
             self.refresh_books()
@@ -142,20 +142,21 @@ class Controller:
             self.set_status(f"'{book.title}' is already available.")
 
     # =============================================================
-    # Book
+    # Book Sort
     # =============================================================
 
     def sort_books(self, choice):
 
-        sort_options = {"Title (A-Z)": lambda b: b.title.lower(),
-                        "Title (Z-A)": lambda b: b.title.lower(),
-                        "Author": lambda b: b.author.lower(),
-                        "Year (Newest)": lambda b: b.year,
-                        "Year (Oldest)": lambda b: b.year,
-                        "Pages (Smallest)": lambda b: b.pages,
-                        "Pages (Largest)": lambda b: b.pages,
-                        "Available": lambda b: (not b.available, b.title.lower()),
-                        "Borrowed": lambda b: (b.available, b.title.lower())}
+        sort_options = {
+            "Title (A-Z)"      : lambda b: b.title.lower(),
+            "Title (Z-A)"      : lambda b: b.title.lower(),
+            "Author"           : lambda b: b.author.lower(),
+            "Year (Newest)"    : lambda b: b.year,
+            "Year (Oldest)"    : lambda b: b.year,
+            "Pages (Smallest)" : lambda b: b.pages,
+            "Pages (Largest)"  : lambda b: b.pages,
+            "Available"        : lambda b: (not b.available, b.title.lower()),
+            "Borrowed"         : lambda b: (b.available, b.title.lower())}
 
         key = sort_options.get(choice)
         if key is None:
@@ -177,10 +178,11 @@ class Controller:
         borrower = ""
         if book.borrower:
             borrower = book.borrower.name.lower()
-        return any([query in book.title.lower(), 
-                    query in book.author.lower(),
-                    query in str(book.year), query in borrower , 
-                    query in ("available" if book.available else "borrowed")])
+        return any(
+            [query in book.title.lower(), 
+            query in book.author.lower(),
+            query in str(book.year), query in borrower , 
+            query in ("available" if book.available else "borrowed")])
 
     # =============================================================
     # Book's Update
