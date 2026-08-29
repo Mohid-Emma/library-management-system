@@ -2,18 +2,20 @@
 
 import customtkinter as     ctk
 from   models        import Book
+from   config        import theme
 from   tkinter       import messagebox
 from   utils         import check_integer
 
+
 class BookForm(ctk.CTkFrame):
     def __init__(self, master):
-        super().__init__(master)
+        super().__init__(master, fg_color= theme.surface_light)
 
         self.title_entry        = self.create_entry("Book Title")
         self.author_entry       = self.create_entry("Author")
         self.pages_entry        = self.create_entry("Pages")
         self.year_entry         = self.create_entry("Publication Year")
-        self.available_checkbox = ctk.CTkCheckBox(self, text="Available", font=("Helvetica", 18), fg_color="green", hover_color="green")
+        self.available_checkbox = ctk.CTkCheckBox(self, text="Available", font=("Segoe UI", 18), fg_color="green", hover_color="green")
         self.available_checkbox.pack(padx=15, pady=15, expand="True")
 
     # =============================================================
@@ -22,7 +24,14 @@ class BookForm(ctk.CTkFrame):
 
     def create_entry(self, placeholder):
 
-        entry = ctk.CTkEntry(self, placeholder_text= placeholder, font=("Helvetica", 15), corner_radius=10)
+        entry = ctk.CTkEntry(
+            master           = self, 
+            placeholder_text = placeholder,
+            height        = 45,
+            corner_radius = 10,
+            fg_color      = theme.transparent,
+            text_color    = theme.text,
+            font          = ("Segoe UI", 13))
         entry.pack(padx=20, pady=20, expand="True", fill="both")
         return entry
 

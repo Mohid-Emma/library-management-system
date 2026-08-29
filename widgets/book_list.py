@@ -1,11 +1,18 @@
 #book_list.py
 
 import customtkinter as     ctk
+from   config        import theme
 from   widgets       import BookCard
 
 class BookList(ctk.CTkScrollableFrame):
     def __init__(self, master):
-            super().__init__(master, label_text="Books in Library", label_font=("Helvetica", 24, "bold"), corner_radius= 20, label_anchor="center")
+            super().__init__(
+                master        =  master, 
+                label_text    = "Books in Library", 
+                label_font    = ("Segoe UI", 24, "bold"), 
+                corner_radius =  20, 
+                label_anchor  = "center", 
+                fg_color      =  theme.surface_light)
 
     # =============================================================
     # Assignation Function to Variable

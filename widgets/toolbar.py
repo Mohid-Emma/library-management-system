@@ -1,9 +1,10 @@
 # toolbar.py
 import customtkinter as ctk
+from   config        import theme
 
 class ToolBar(ctk.CTkFrame):
     def __init__(self, master):
-        super().__init__(master)
+        super().__init__(master, fg_color= theme.surface_light)
 
         self.create_widgets()
 
