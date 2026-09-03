@@ -14,7 +14,9 @@ text          = "#F8FAFC"
 text_muted    = "#94A3B8"
 
 success       = "#22C55E"
+success_hover = "#1EAD53"
 danger        = "#EF4444"
+danger_hover  = "#D43A3A"
 warning       = "#F59E0B"
 
 transparent   =   "transparent"

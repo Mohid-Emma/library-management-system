@@ -9,34 +9,77 @@ from   utils         import check_integer
 
 class BookForm(ctk.CTkFrame):
     def __init__(self, master):
-        super().__init__(master, fg_color= theme.surface_light)
+        super().__init__(master, fg_color= theme.transparent)
 
-        self.title_entry        = self.create_entry("Book Title")
-        self.author_entry       = self.create_entry("Author")
-        self.pages_entry        = self.create_entry("Pages")
-        self.year_entry         = self.create_entry("Publication Year")
-        self.available_checkbox = ctk.CTkCheckBox(self, text="Available", font=("Segoe UI", 18), fg_color="green", hover_color="green")
-        self.available_checkbox.pack(padx=15, pady=15, expand="True")
+        self.create_widget()
 
-    # =============================================================
-    # Entry Creation
-    # =============================================================
+# =============================================================
+# Widget Creation
+# =============================================================
 
-    def create_entry(self, placeholder):
+    def create_widget(self):
+
+        self.grid_columnconfigure(0, weight=1)
+
+        self.title_label  = self.create_label("Book Title", row=0)
+        self.title_entry  = self.create_entry("Enter Book Title", row=1)
+
+        self.author_label = self.create_label("Author", row=2)
+        self.author_entry = self.create_entry("Enter Author", row=3)
+
+        self.pages_label  = self.create_label("Pages", row=4)
+        self.pages_entry  = self.create_entry("Enter Pages", row=5)
+
+        self.year_entry   = self.create_entry("Enter Publication Year", row=7)
+        self.year_label   = self.create_label("Publication Year", row=6)
+
+        self.available_checkbox = ctk.CTkCheckBox(
+            master        =  self, 
+            text          = "Available", 
+            font          = ("Segoe UI", 13, "bold"), 
+            fg_color      = theme.success, 
+            hover_color   = theme.success,
+            border_color  = theme.text_muted,
+            corner_radius = 6)
+        self.available_checkbox.grid(row=8, column=0, padx=5, pady=(20,5))
+
+# =============================================================
+# Label Creation
+# =============================================================
+
+    def create_label(self, text, row):
+
+        label = ctk.CTkLabel(
+            master        = self, 
+            text          = text,
+            text_color    = theme.text,
+            font          = ("Segoe UI", 12, "bold"))
+        label.grid(row=row, column=0, padx=5, pady=(8,4), sticky="w")
+        return label
+
+# =============================================================
+# Entry Creation
+# =============================================================
+
+    def create_entry(self, placeholder, row):
 
         entry = ctk.CTkEntry(
-            master           = self, 
-            placeholder_text = placeholder,
-            corner_radius = 10,
-            fg_color      = theme.transparent,
-            text_color    = theme.text,
-            font          = ("Segoe UI", 13))
-        entry.pack(padx=20, pady=20, expand="True", fill="both")
+            master                 = self, 
+            placeholder_text       = placeholder,
+            height                 = 40,
+            corner_radius          = 9,
+            border_width           = 1,
+            border_color           = theme.border,
+            fg_color               = theme.background,
+            text_color             = theme.text,
+            placeholder_text_color = theme.text_muted,
+            font                   = ("Segoe UI", 13))
+        entry.grid(row=row, column=0, padx=5, pady=(0,8), sticky="ew")
         return entry
 
-    # =============================================================
-    # Entry Creation
-    # =============================================================
+# =============================================================
+# Entry Clear
+# =============================================================
 
     def clear_entries(self):
 
@@ -45,45 +88,47 @@ class BookForm(ctk.CTkFrame):
             self.author_entry,
             self.pages_entry, 
             self.year_entry]
+        
         for entry in entries:
             entry.delete(0, "end")
+
         self.available_checkbox.deselect()
 
-    # =============================================================
-    # Fill the Entries with Book's Data
-    # =============================================================
+# =============================================================
+# Fill the Entries with Book's Data
+# =============================================================
 
     def fill_entries(self, book):
 
-        self.title_entry.insert(0, book.title)
+        self.title_entry.insert( 0, book.title)
         self.author_entry.insert(0, book.author)
-        self.pages_entry.insert(0, str(book.pages))
-        self.year_entry.insert(0, str(book.year))
+        self.pages_entry.insert( 0, str(book.pages))
+        self.year_entry.insert(  0, str(book.year))
 
-    # =============================================================
-    # Get Book's Data from User
-    # =============================================================
+# =============================================================
+# Get Book's Data from User
+# =============================================================
 
     def get_book(self):
 
-        title     = self.title_entry.get()
-        author    = self.author_entry.get()
+        title     = self.title_entry.get().strip()
+        author    = self.author_entry.get().strip()
         pages     = check_integer(self.pages_entry.get(), "Pages")
         year      = check_integer(self.year_entry.get(), "Year")
         available = bool(self.available_checkbox.get())
 
         if pages is None or year is None:
-            return
+            return None
         try:
             book = Book(title, author, pages, year, available)
         except ValueError as error:
             messagebox.showerror("Invalid Input" ,str(error)+" "*100)
-            return
+            return None
         return book
 
-    # =============================================================
-    # Disable/ Able of Checkbox During Edit Mode
-    # =============================================================
+# =============================================================
+# Disable/ Able of Checkbox During Edit Mode
+# =============================================================
 
     def set_edit_mode(self, mode):
         if mode:

@@ -1,99 +1,160 @@
 #borrower_dialog.py
 
 import customtkinter as     ctk
-from   tkinter       import messagebox
-from   models        import Borrower
+from   config        import theme
 
 class BorrowerDialog(ctk.CTkToplevel):
-    def __init__(self, parent, book):
-        super().__init__(parent)
-        self.parent     = parent
-        self.book_title = book
+    def __init__(self, master, book_title):
+        super().__init__(master)
+
         self.result     = None 
 
     # =============================================================
     # Window Configuration
     # =============================================================
 
-        self.grab_set()
+        self.title("Borrow Book")
+        self.geometry("500x360")
         self.resizable(False, False)
 
-        self.title("Borrow")
-        self.geometry("500x300")
-        self.minsize(300, 200)
+        self.configure(fg_color=theme.background)
+        self.transient(master)
+        self.grab_set()
 
-        ctk.set_appearance_mode("System")
-        ctk.set_default_color_theme("blue")
+        self.create_widgets(book_title)
 
-        self.create_window()
-        self.create_label()
-        self.create_entry()
-        self.create_button()
+# =============================================================
+# GUI/UI
+# =============================================================
 
-    # =============================================================
-    # Frame Configuration
-    # =============================================================
+    def create_widgets(self, book_title):
 
-    def create_window(self):
-        self.main = ctk.CTkFrame(self)
-        self.main.pack(fill="both", expand=True)
+        self.grid_columnconfigure(0, weight=1)
 
     # =============================================================
-    # Label Creation
+    # Main Card
     # =============================================================
 
-    def create_label(self):
-        self.book_label = ctk.CTkLabel(self.main, text = f"Title: {self.book_title}", font=("Segoe UI", 27, "bold"))
-        self.book_label.pack(pady=20)
+        self.card = ctk.CTkFrame(
+            master        = self,
+            corner_radius = 15,
+            border_width  = 1,
+            border_color  = theme.border,
+            fg_color      = theme.surface)
+        self.card.grid(row=0, column=0, padx=25, pady=25, sticky="news")
+
+        self.card.grid_columnconfigure(0, weight=1)
+    
+    # =============================================================
+    # Title
+    # =============================================================
+        
+        ctk.CTkLabel(
+            master     = self.card,
+            text       = "📖 Borrow Book",
+            font       = ("Segoe UI", 21, "bold"),
+            text_color = theme.text
+        ).grid(row=0, column=0, padx=25, pady=(25,5), sticky="w")
 
     # =============================================================
-    # Entry Creation
+    # Book
     # =============================================================
+        
+        ctk.CTkLabel(
+            master     = self.card,
+            text       = book_title,
+            font       = ("Segoe UI", 12),
+            text_color = theme.text_muted,
+            wraplength = 330,
+            justify    = "left"
+        ).grid(row=1, column=0, padx=25, pady=(0,20), sticky="w")
 
-    def create_entry(self):
+        ctk.CTkLabel(
+            master     = self.card,
+            text       = "Borrower Name",
+            font       = ("Segoe UI", 12, "bold"),
+            text_color = theme.text,
+        ).grid(row=2, column=0, padx=25, pady=(0,5), sticky="w")
 
-        self.borrower_name_entry = ctk.CTkEntry(self.main, placeholder_text="What is your name?", width=400, height= 30)
-        self.borrower_name_entry.pack(pady=10)
+        self.name_entry = ctk.CTkEntry(
+            master                 = self.card, 
+            placeholder_text       = "Enter Borrower Name",
+            height                 = 40,
+            corner_radius          = 9,
+            border_width           = 1,
+            border_color           = theme.border,
+            fg_color               = theme.background,
+            text_color             = theme.text,
+            placeholder_text_color = theme.text_muted,
+            font                   = ("Segoe UI", 13))
+        self.name_entry.grid(row=3, column=0, padx=25, pady=(0,20), sticky="ew")
+
 
     # =============================================================
     # Button Creation
     # =============================================================
 
-    def create_button(self):
-    
-        button_frame = ctk.CTkFrame(self.main)
-        button_frame.pack(anchor="c", padx=10, pady=10)
+        button_frame = ctk.CTkFrame(
+            master   = self.card,
+            fg_color = theme.transparent)
+        button_frame.grid(row=4, column=0, padx=25, pady=(0,25), sticky="ew")
 
-        button_frame.rowconfigure(0, weight=0, uniform="a")
-        button_frame.columnconfigure((0,1), weight=1, uniform="a")
+        button_frame.columnconfigure(0, weight=1)
+        button_frame.columnconfigure(1, weight=1)
 
-        ctk.CTkButton(button_frame, text="Cancel", command=self.cancel_borrow).grid(row = 0, column = 0, sticky="news", padx=10, pady=5)
-        ctk.CTkButton(button_frame, text="Borrow", command=self.borrow_book  ).grid(row = 0, column = 1, sticky="news", padx=10, pady=5)
+        self.cancel_button = ctk.CTkButton(
+            master        = button_frame, 
+            text          = "Cancel",
+            height        = 40,
+            corner_radius = 9, 
+            fg_color      = theme.surface_light,
+            hover_color   = theme.border,
+            text_color    = theme.text,
+            font          = ("Segoe UI", 12, "bold"),
+            command       = self.cancel)
+        self.cancel_button.grid(row=0, column=0, padx=(0,5), sticky="ew")
 
-    # =============================================================
-    # Borrower Name
-    # =============================================================
+        self.borrow_button = ctk.CTkButton(
+            master        = button_frame, 
+            text          = "Borrow Book",
+            height        = 40,
+            corner_radius = 9, 
+            fg_color      = theme.success,
+            hover_color   = theme.success_hover,
+            font          = ("Segoe UI", 12, "bold"),
+            command       = self.confirm)
+        self.borrow_button.grid(row=0, column=1, padx=(5,0), sticky="ew")
 
-    def borrow_book(self):
-        name = self.borrower_name_entry.get().strip()
-        try:
-            self.result = Borrower(name)
-        except ValueError as error:
-            messagebox.showerror("Invalid Input", str(error)+" "*20)
-            return 
+        self.name_entry.focus_set()
+
+        self.bind("<Return>", lambda event: self.confirm())
+        self.bind("<Escape>", lambda event: self.cancel())
+
+# ============================================================= 
+# Confirm 
+# =============================================================
+
+    def confirm(self):
+        name = self.name_entry.get().strip()
+        if not name:
+            self.name_entry.configure(border_name = theme.warning)
+            self.name_entry.focus_set()
+            return
+        self.result = name
         self.destroy()
 
-    # =============================================================
-    # Get Result From This Windows
-    # =============================================================
+# =============================================================
+# Cancel 
+# =============================================================
+
+    def cancel(self):
+        self.result = None
+        self.destroy()
+
+
+# =============================================================
+# Result
+# =============================================================
 
     def get_result(self):
         return self.result
-
-    # =============================================================
-    # Close Window
-    # =============================================================
-
-    def cancel_borrow(self):
-        self.destroy()
-
