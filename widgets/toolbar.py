@@ -3,7 +3,7 @@ import customtkinter as     ctk
 from   config        import theme
 
 class ToolBar(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master) -> None:
         super().__init__(master, fg_color= theme.transparent)
 
         self.on_search = None
@@ -15,7 +15,7 @@ class ToolBar(ctk.CTkFrame):
 # Assignation Function to Variable
 # =============================================================
 
-    def set_callbacks(self, on_search, on_sort):
+    def set_callbacks(self, on_search : str, on_sort : str) -> None:
         self.on_search = on_search
         self.on_sort   = on_sort
 
@@ -23,7 +23,7 @@ class ToolBar(ctk.CTkFrame):
 # Widget Creation
 # =============================================================
 
-    def create_widgets(self):
+    def create_widgets(self) -> None:
 
         self.grid_columnconfigure(0, weight=1)
 
@@ -78,7 +78,7 @@ class ToolBar(ctk.CTkFrame):
 # Search for Book
 # =============================================================
 
-    def on_search_changed(self, _):
+    def on_search_changed(self, _) -> None:
         if self.on_search is None:
             return
         query = self.search_entry.get().strip().lower()
@@ -88,7 +88,7 @@ class ToolBar(ctk.CTkFrame):
 # Book Sort
 # =============================================================
 
-    def on_sort_changed(self, choice):
+    def on_sort_changed(self, choice : str) -> None:
         if self.on_sort is None:
             return
         self.on_sort(choice)
@@ -97,7 +97,7 @@ class ToolBar(ctk.CTkFrame):
 # Search Clear
 # =============================================================
 
-    def clear_search(self):
+    def clear_search(self) -> None:
         self.search_entry.delete(0, "End")
         if self.on_search:
             self.on_search("")

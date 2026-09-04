@@ -4,7 +4,7 @@ import customtkinter as     ctk
 from   config        import theme
 
 class BookCard(ctk.CTkFrame):
-    def __init__(self, master, book, on_edit, on_delete, on_return, on_borrow):
+    def __init__(self, master, book, on_edit, on_delete, on_return, on_borrow) -> None:
         super().__init__(
             master        = master,
             corner_radius = 12,
@@ -27,7 +27,7 @@ class BookCard(ctk.CTkFrame):
 # Layout Creation
 # =============================================================
 
-    def create_layout(self):
+    def create_layout(self) -> None:
         self.grid_columnconfigure(0, weight=1)
         self.grid_columnconfigure(1, weight=0)
 
@@ -35,7 +35,7 @@ class BookCard(ctk.CTkFrame):
 # Book Information
 # =============================================================
 
-    def create_book_info(self):
+    def create_book_info(self) -> None:
         info_frame = ctk.CTkFrame(
             master   = self,
             fg_color = theme.transparent)
@@ -114,7 +114,7 @@ class BookCard(ctk.CTkFrame):
 # Details Creation
 # =============================================================
 
-    def create_detail(self, parent, label, value, column):
+    def create_detail(self, parent, label : str, value : str, column : int) -> None:
 
         frame = ctk.CTkFrame(
             master   = parent,
@@ -142,7 +142,7 @@ class BookCard(ctk.CTkFrame):
 # Button Creation
 # =============================================================
 
-    def create_buttons(self):
+    def create_buttons(self) -> None:
 
         button_frame = ctk.CTkFrame(
             master   = self, 

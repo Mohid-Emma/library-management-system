@@ -4,7 +4,7 @@ import customtkinter as     ctk
 from   config        import theme
 
 class BorrowerDialog(ctk.CTkToplevel):
-    def __init__(self, master, book_title):
+    def __init__(self, master, book_title) -> None:
         super().__init__(master)
 
         self.result     = None 
@@ -27,7 +27,7 @@ class BorrowerDialog(ctk.CTkToplevel):
 # GUI/UI
 # =============================================================
 
-    def create_widgets(self, book_title):
+    def create_widgets(self, book_title : str) -> None:
 
         self.grid_columnconfigure(0, weight=1)
 
@@ -134,7 +134,7 @@ class BorrowerDialog(ctk.CTkToplevel):
 # Confirm 
 # =============================================================
 
-    def confirm(self):
+    def confirm(self) -> None:
         name = self.name_entry.get().strip()
         if not name:
             self.name_entry.configure(border_name = theme.warning)
@@ -147,7 +147,7 @@ class BorrowerDialog(ctk.CTkToplevel):
 # Cancel 
 # =============================================================
 
-    def cancel(self):
+    def cancel(self) -> None:
         self.result = None
         self.destroy()
 
@@ -156,5 +156,5 @@ class BorrowerDialog(ctk.CTkToplevel):
 # Result
 # =============================================================
 
-    def get_result(self):
+    def get_result(self) -> str:
         return self.result

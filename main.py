@@ -7,7 +7,7 @@ from database import Database
 #  Program Initiallization
 # =============================================================
 
-def main():
+def main() -> None:
     db  = Database()
     db.create_table()
     app = LibraryApp(db)

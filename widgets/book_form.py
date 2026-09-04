@@ -8,7 +8,7 @@ from   utils         import check_integer
 
 
 class BookForm(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master) -> None:
         super().__init__(master, fg_color= theme.transparent)
 
         self.create_widget()
@@ -17,7 +17,7 @@ class BookForm(ctk.CTkFrame):
 # Widget Creation
 # =============================================================
 
-    def create_widget(self):
+    def create_widget(self) -> None:
 
         self.grid_columnconfigure(0, weight=1)
 
@@ -47,7 +47,7 @@ class BookForm(ctk.CTkFrame):
 # Label Creation
 # =============================================================
 
-    def create_label(self, text, row):
+    def create_label(self, text : str, row :int) -> ctk.CTkFrame:
 
         label = ctk.CTkLabel(
             master        = self, 
@@ -61,7 +61,7 @@ class BookForm(ctk.CTkFrame):
 # Entry Creation
 # =============================================================
 
-    def create_entry(self, placeholder, row):
+    def create_entry(self, placeholder : str, row : int) -> ctk.CTkEntry:
 
         entry = ctk.CTkEntry(
             master                 = self, 
@@ -81,7 +81,7 @@ class BookForm(ctk.CTkFrame):
 # Entry Clear
 # =============================================================
 
-    def clear_entries(self):
+    def clear_entries(self) -> None:
 
         entries = [
             self.title_entry, 
@@ -98,7 +98,7 @@ class BookForm(ctk.CTkFrame):
 # Fill the Entries with Book's Data
 # =============================================================
 
-    def fill_entries(self, book):
+    def fill_entries(self, book : Book) -> None:
 
         self.title_entry.insert( 0, book.title)
         self.author_entry.insert(0, book.author)
@@ -109,7 +109,7 @@ class BookForm(ctk.CTkFrame):
 # Get Book's Data from User
 # =============================================================
 
-    def get_book(self):
+    def get_book(self) -> None | Book:
 
         title     = self.title_entry.get().strip()
         author    = self.author_entry.get().strip()
@@ -130,7 +130,7 @@ class BookForm(ctk.CTkFrame):
 # Disable/ Able of Checkbox During Edit Mode
 # =============================================================
 
-    def set_edit_mode(self, mode):
+    def set_edit_mode(self, mode : bool) -> None:
         if mode:
             self.available_checkbox.deselect()
             self.available_checkbox.configure(state="disabled")  

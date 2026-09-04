@@ -7,7 +7,7 @@ from   utils  import file_location, check_for_borrower
 DB_PATH = file_location()
 
 class Database:
-    def __init__(self):
+    def __init__(self) -> None:
         self.connection = sqlite3.connect(DB_PATH)
         self.cursor = self.connection.cursor()
 
@@ -15,7 +15,7 @@ class Database:
     # Table Creation If not Exist
     # =============================================================
 
-    def create_table(self):
+    def create_table(self) -> None:
         self.cursor.execute(""" CREATE TABLE IF NOT EXISTS books(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
@@ -30,7 +30,7 @@ class Database:
     # Book Addition
     # =============================================================
 
-    def add_book(self, book: Book):
+    def add_book(self, book: Book) -> None:
         borrower_name = check_for_borrower(book)
         self.cursor.execute(""" INSERT INTO books 
         (title, author, pages, year, available, borrower_name) 
@@ -59,7 +59,7 @@ class Database:
     # Book Delection
     # =============================================================
 
-    def delete_book(self, book: Book):
+    def delete_book(self, book: Book) -> None:
         self.cursor.execute("DELETE FROM books Where id=?", (book.book_id,))
         self.connection.commit()
 
@@ -67,7 +67,7 @@ class Database:
     # Book Update
     # =============================================================
 
-    def update_book(self, book: Book):
+    def update_book(self, book: Book) -> None:
         borrower_name = check_for_borrower(book)
         self.cursor.execute(""" UPDATE books
         SET title=?, author=?, pages=?, year=?, available=?, borrower_name=? Where id=?""",
@@ -78,7 +78,7 @@ class Database:
     # Book Borrow
     # =============================================================
 
-    def borrow_book(self, book: Book):
+    def borrow_book(self, book: Book) -> None:
         borrower_name = check_for_borrower(book)
         self.cursor.execute(""" UPDATE books 
         SET available=?, borrower_name=? Where id=?""",
@@ -89,7 +89,7 @@ class Database:
     # Book Return
     # =============================================================
 
-    def return_book(self, book: Book):
+    def return_book(self, book: Book) -> None:
         borrower_name = check_for_borrower(book)
         self.cursor.execute(""" UPDATE books 
         SET available=?, borrower_name=? Where id=?""",
@@ -100,5 +100,5 @@ class Database:
     # Database Close
     # =============================================================
 
-    def close(self):
+    def close(self) -> None:
         self.connection.close()

@@ -1,11 +1,12 @@
 #book_list.py
 
 import customtkinter as     ctk
+from   models        import Book
 from   config        import theme
 from   widgets       import BookCard
 
 class BookList(ctk.CTkScrollableFrame):
-    def __init__(self, master):
+    def __init__(self, master) -> None:
             super().__init__(
             master                       = master, 
             corner_radius                = 10,
@@ -24,7 +25,7 @@ class BookList(ctk.CTkScrollableFrame):
 # Assignation Function to Variable
 # =============================================================
 
-    def set_callbacks(self, on_edit, on_delete, on_return, on_borrow):
+    def set_callbacks(self, on_edit : str, on_delete : str, on_return : str, on_borrow : str) -> None:
         self.on_edit   = on_edit
         self.on_delete = on_delete
         self.on_return = on_return
@@ -34,14 +35,14 @@ class BookList(ctk.CTkScrollableFrame):
 # Layout Creation  
 # ============================================================= 
 
-    def create_layout(self): 
+    def create_layout(self) -> None: 
         self.grid_columnconfigure(0, weight=1)
 
 # =============================================================
 # Book Display
 # =============================================================
 
-    def display_books(self, books):
+    def display_books(self, books : Book) -> None:
 
         self.clear()
 
@@ -63,7 +64,7 @@ class BookList(ctk.CTkScrollableFrame):
 # Destroy of Book Display
 # =============================================================
 
-    def clear(self):
+    def clear(self) -> None:
         for widget in self.winfo_children():
             widget.destroy()
 
@@ -71,7 +72,7 @@ class BookList(ctk.CTkScrollableFrame):
 # Display When Library is Empty
 # =============================================================
 
-    def show_empty_message(self):
+    def show_empty_message(self) -> None:
         empty_frame = ctk.CTkFrame(
             master   = self, 
             fg_color = theme.transparent)

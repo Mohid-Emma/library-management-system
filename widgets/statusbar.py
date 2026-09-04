@@ -3,7 +3,7 @@ import customtkinter as ctk
 from config import theme
 
 class StatusBar(ctk.CTkFrame):
-    def __init__(self, master):
+    def __init__(self, master) -> None:
         super().__init__(master, fg_color= theme.surface_light)
 
         self.status_label = ctk.CTkLabel(self, text="🟢 Ready", anchor="w")
@@ -13,5 +13,5 @@ class StatusBar(ctk.CTkFrame):
 # Display Currrent Action
 # =============================================================
 
-    def set_status(self, message):
+    def set_status(self, message : str) -> None:
         self.status_label.configure(text= message)

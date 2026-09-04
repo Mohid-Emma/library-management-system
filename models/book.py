@@ -2,7 +2,7 @@
 from .borrower import Borrower
 
 class Book:
-    def __init__(self, title, author, pages, year, available=True, book_id = None) -> None:
+    def __init__(self, title, author, pages, year, available= True, book_id= None) -> None:
     # =============================================================
     # Custom Exception
     # =============================================================

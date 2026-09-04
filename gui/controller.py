@@ -1,11 +1,12 @@
 # controller.py
 
+from  models          import Book
 from  tkinter         import messagebox
 from .borrower_dialog import BorrowerDialog
 
 
 class Controller:
-    def __init__(self, app, library, book_form, book_list, toolbar, statusbar):
+    def __init__(self, app, library, book_form, book_list, toolbar, statusbar) -> None:
         self.app          = app
         self.library      = library
         self.book_form    = book_form
@@ -24,14 +25,14 @@ class Controller:
 # Modules Assignation
 # =============================================================
 
-    def set_callback(self, on_set_edit_mode):
+    def set_callback(self, on_set_edit_mode) -> None:
         self.on_set_edit_mode = on_set_edit_mode
 
 # =============================================================
 # Book Addition
 # =============================================================
     
-    def add_book(self):
+    def add_book(self) -> None:
         if self.current_book is None:
             self.create_new_book()
         else:
@@ -40,7 +41,7 @@ class Controller:
 # Book Creation
 # =============================================================
 
-    def create_new_book(self):
+    def create_new_book(self) -> None:
         book = self.book_form.get_book()
         if book is None:
             return
@@ -56,7 +57,7 @@ class Controller:
 # Book Save
 # =============================================================
 
-    def save_book_changes(self):
+    def save_book_changes(self) -> None:
         updated_book = self.book_form.get_book()
         if updated_book is None:
             return
@@ -73,7 +74,7 @@ class Controller:
 # Book Edition
 # =============================================================
     
-    def edit_book(self, book):
+    def edit_book(self, book : Book) -> None:
         self.current_book = book
         self.book_form.clear_entries()
         self.book_form.fill_entries(book)
@@ -85,7 +86,7 @@ class Controller:
 # Edit Mode Cancel 
 # =============================================================
     
-    def cancel_edit(self):
+    def cancel_edit(self) -> None:
         self.reset_form()
         self.set_status("Edit cancelled.")
 
@@ -93,7 +94,7 @@ class Controller:
 # Clear Entries
 # =============================================================
 
-    def reset_form(self):
+    def reset_form(self) -> None:
         self.current_book = None
         self.book_form.clear_entries()
         self.book_form.set_edit_mode(False)
@@ -103,7 +104,7 @@ class Controller:
 # Book Delection
 # =============================================================
 
-    def delete_book(self, book):
+    def delete_book(self, book : Book) -> None:
         self.cancel_edit()
     
         if not messagebox.askyesno("Delete Book", f" Delete '{book.title}'?\n"+" "*100):
@@ -116,7 +117,7 @@ class Controller:
 # Book Borrow
 # =============================================================
 
-    def borrow_book(self, book):
+    def borrow_book(self, book : Book) -> None:
         self.cancel_edit()
         dialog = BorrowerDialog(self.app, book.title)
         self.app.wait_window(dialog)
@@ -133,7 +134,7 @@ class Controller:
 # Book Return
 # =============================================================
 
-    def return_book(self, book):
+    def return_book(self, book : Book) -> None:
         self.cancel_edit()
         if self.library.return_book(book):
             self.refresh_books()
@@ -145,7 +146,7 @@ class Controller:
 # Book Sort
 # =============================================================
 
-    def sort_books(self, choice):
+    def sort_books(self, choice : str) -> None:
 
         sort_options = {
             "Title (A-Z)"      : lambda b: b.title.lower(),
@@ -169,7 +170,7 @@ class Controller:
 # Search for Book
 # =============================================================
 
-    def search_books(self, query):
+    def search_books(self, query : str) -> None:
         query = query.strip().lower()
         books = [book for book in self.library.books if self.matches_search(book, query)]
         self.book_list.display_books(books)
@@ -188,12 +189,12 @@ class Controller:
 # Book's Update
 # =============================================================
 
-    def refresh_books(self):
+    def refresh_books(self) -> None:
         self.book_list.display_books(self.library.books)
 
 # =============================================================
 # Display Currrent Action
 # =============================================================
 
-    def set_status(self, message):
+    def set_status(self, message : str) -> None:
         self.status_bar.set_status(message)
