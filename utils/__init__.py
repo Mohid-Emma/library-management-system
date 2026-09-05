@@ -1,1 +1,1 @@
-from .helpers import check_integer, file_location, check_for_borrower, app_id, check_for_icon, icon_extract
+from .helpers import check_integer, file_location, check_for_borrower, app_id, icon_location, icon_extract

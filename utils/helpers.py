@@ -1,7 +1,6 @@
 #helper.py
 
-import ctypes
-import tkinter
+import ctypes, tkinter , sys
 from   pathlib import Path
 from   models  import Book
 from   tkinter import messagebox
@@ -22,8 +21,9 @@ def check_integer(value: str, field: str="Value") -> int | None:
 # =============================================================
 
 def file_location() -> Path:
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    return BASE_DIR / "database" /"library.db"
+    BASE_DIR = Path.home() / "Library Management System"
+    BASE_DIR.mkdir(exist_ok=True)
+    return BASE_DIR / "library.db"
 
 # =============================================================
 # Check for Borrower
@@ -42,28 +42,27 @@ def app_id() -> None:
     except Exception as e:
         messagebox.showerror("Error", f"Taskbar fix failed: {e}\n"+" "*100)
         return None
-
 # =============================================================
-# Check for Icon
+# Icon Path
 # =============================================================
 
-def check_for_icon() -> bool | Path | None:
-    BASE_DIR  = Path(__file__).resolve().parent.parent
-    icon_path =  BASE_DIR / "assets" /"icon.png"
-
-    if icon_path.exists():
-        return True, icon_path
+def icon_location() -> Path:
+    if getattr(sys, "frozen", False):
+        BASE_DIR = Path(sys._MEIPASS)
     else:
-        messagebox.showerror("Error", f"Warning: '{icon_path}' not found in the script directory.\n"+" "*100)
-        return False, None
-    
+        BASE_DIR = Path(__file__).resolve().parent.parent
+
+    return BASE_DIR / "assets" /"icon.png"
+
 # =============================================================
 # Icon Extract
 # =============================================================
 def icon_extract(window) -> None:
 
-    icon_exist, icon_path = check_for_icon()
-    if icon_path is None or not icon_exist:
+    icon_path =  icon_location()
+
+    if not icon_path.is_file():
+        messagebox.showerror("Error", f"Warning: '{icon_path}' not found in the script directory.\n"+" "*100)
         return
 
     def apply_icon():
