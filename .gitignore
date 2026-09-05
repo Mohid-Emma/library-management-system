@@ -3,4 +3,8 @@ __pycache__/
 *.json.bak
 .vscode/
 .idea/
-data/Book_record.json
+database/library.db
+build/
+dist/
+*.spec
+
