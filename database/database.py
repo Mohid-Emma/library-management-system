@@ -1,7 +1,7 @@
 #database.py
 import sqlite3
-from   models import Book, Borrower
-from   utils  import file_location, check_for_borrower
+from typing import Any
+from utils import file_location, check_for_borrower
 
 
 DB_PATH = file_location()
@@ -16,7 +16,8 @@ class Database:
     # =============================================================
 
     def create_table(self) -> None:
-        self.cursor.execute(""" CREATE TABLE IF NOT EXISTS books(
+        self.cursor.execute(
+            """ CREATE TABLE IF NOT EXISTS books(
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             title TEXT NOT NULL,
             author TEXT NOT NULL,
@@ -30,70 +31,75 @@ class Database:
     # Book Addition
     # =============================================================
 
-    def add_book(self, book: Book) -> None:
-        borrower_name = check_for_borrower(book)
+    def add_book(self, book: dict[str, Any]) -> bool:
         self.cursor.execute(""" INSERT INTO books 
         (title, author, pages, year, available, borrower_name) 
         VALUES (?, ?, ?, ?, ?, ?)""", 
-        (book.title, book.author, book.pages, book.year, int(book.available), borrower_name))
+        (book["title"], book["author"], book["pages"], book["year"], int(book["available"]), book["borrower"]))
         self.connection.commit()
-        book.book_id = self.cursor.lastrowid
+        book["book_id"] = self.cursor.lastrowid
+        return True
+
+    # =============================================================
+    # Book Edition
+    # =============================================================
+
+    def update_book(self, book: dict[str, Any]) -> None:
+        self.cursor.execute(""" UPDATE books
+        SET title=?, author=?, pages=?, year=?, available=?, borrower_name=? Where id=?""",
+        (book["title"], book["author"], book["pages"], book["year"], int(book["available"]), book["borrower"], book["book_id"]))
+        self.connection.commit()
 
     # =============================================================
     # Fetch All Books
     # =============================================================
 
-    def get_books(self) -> list[Book]:
+    def fetch_books(self) -> list[dict[str, Any]]:
         self.cursor.execute("""SELECT * FROM books""")
         rows =  self.cursor.fetchall()
-        books: list[Book] = []
+        books = []
         for row in rows:
-            book = Book(row[1], row[2], row[3], row[4], bool(row[5]), book_id=row[0])
-            if row[6]:
-                book.borrower = Borrower(row[6])
-                book.available = False
-            books.append(book)
+            books.append({
+            "book_id"  : row[0],
+            "title"    : row[1], 
+            "author"   : row[2], 
+            "pages"    : row[3], 
+            "year"     : row[4], 
+            "available": bool(row[5]), 
+            "borrower" : row[6] if row[0] else None})
         return books
 
     # =============================================================
     # Book Delection
     # =============================================================
 
-    def delete_book(self, book: Book) -> None:
-        self.cursor.execute("DELETE FROM books Where id=?", (book.book_id,))
-        self.connection.commit()
-
-    # =============================================================
-    # Book Update
-    # =============================================================
-
-    def update_book(self, book: Book) -> None:
-        borrower_name = check_for_borrower(book)
-        self.cursor.execute(""" UPDATE books
-        SET title=?, author=?, pages=?, year=?, available=?, borrower_name=? Where id=?""",
-        (book.title, book.author, book.pages, book.year, int(book.available), borrower_name, book.book_id,))
+    def delete_book(self, book: dict[str, Any]) -> None:
+        self.cursor.execute(
+        "DELETE FROM books Where id=?", 
+        (book["book_id"],))
         self.connection.commit()
 
     # =============================================================
     # Book Borrow
     # =============================================================
 
-    def borrow_book(self, book: Book) -> None:
-        borrower_name = check_for_borrower(book)
-        self.cursor.execute(""" UPDATE books 
+    def borrow_book(self, book: dict[str, Any]) -> None:
+        # borrower_name = check_for_borrower(book)
+        self.cursor.execute(
+        """ UPDATE books 
         SET available=?, borrower_name=? Where id=?""",
-        (int(book.available), borrower_name, book.book_id,))
+        (int(book["available"]), book["borrower"], book["book_id"]))
         self.connection.commit()
 
     # =============================================================
     # Book Return
     # =============================================================
 
-    def return_book(self, book: Book) -> None:
-        borrower_name = check_for_borrower(book)
-        self.cursor.execute(""" UPDATE books 
+    def return_book(self, book: dict[str, Any]) -> None:
+        self.cursor.execute(
+        """ UPDATE books 
         SET available=?, borrower_name=? Where id=?""",
-        (int(book.available), borrower_name, book.book_id,))
+        (int(book["available"]), book["borrower"], book["book_id"]))
         self.connection.commit()
 
     # =============================================================

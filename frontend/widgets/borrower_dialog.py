@@ -1,13 +1,14 @@
-#borrower_dialog.py
+# borrower_dialog.py
 
-import customtkinter as     ctk
-from   config        import theme
+import customtkinter as ctk
+from config import theme
+
 
 class BorrowerDialog(ctk.CTkToplevel):
     def __init__(self, master, book_title) -> None:
         super().__init__(master)
 
-        self.result     = None 
+        self.result = None 
 
     # =============================================================
     # Window Configuration
@@ -31,10 +32,7 @@ class BorrowerDialog(ctk.CTkToplevel):
 
         self.grid_columnconfigure(0, weight=1)
 
-    # =============================================================
     # Main Card
-    # =============================================================
-
         self.card = ctk.CTkFrame(
             master        = self,
             corner_radius = 15,
@@ -45,10 +43,7 @@ class BorrowerDialog(ctk.CTkToplevel):
 
         self.card.grid_columnconfigure(0, weight=1)
     
-    # =============================================================
     # Title
-    # =============================================================
-        
         ctk.CTkLabel(
             master     = self.card,
             text       = "📖 Borrow Book",
@@ -56,10 +51,7 @@ class BorrowerDialog(ctk.CTkToplevel):
             text_color = theme.text
         ).grid(row=0, column=0, padx=25, pady=(25,5), sticky="w")
 
-    # =============================================================
     # Book
-    # =============================================================
-        
         ctk.CTkLabel(
             master     = self.card,
             text       = book_title,
@@ -107,8 +99,8 @@ class BorrowerDialog(ctk.CTkToplevel):
             text          = "Cancel",
             height        = 40,
             corner_radius = 9, 
-            fg_color      = theme.surface_light,
-            hover_color   = theme.border,
+            fg_color      = theme.border,
+            hover_color   = theme.surface_light,
             text_color    = theme.text,
             font          = ("Segoe UI", 12, "bold"),
             command       = self.cancel)
@@ -150,7 +142,6 @@ class BorrowerDialog(ctk.CTkToplevel):
     def cancel(self) -> None:
         self.result = None
         self.destroy()
-
 
 # =============================================================
 # Result

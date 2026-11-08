@@ -1,9 +1,9 @@
 #helper.py
 
 import ctypes, tkinter , sys
-from   pathlib import Path
-from   models  import Book
-from   tkinter import messagebox
+from typing import Any
+from pathlib import Path
+from tkinter import messagebox
 
 # =============================================================
 # Check for Integer form
@@ -11,6 +11,9 @@ from   tkinter import messagebox
 
 def check_integer(value: str, field: str="Value") -> int | None:
     try:
+        if not value:
+            messagebox.showerror("Missed Input", f"{field} entry is empty\n"+" "*100)
+            return 
         return int(value)
     except ValueError:
         messagebox.showerror("Invalid Input", f"{field} must be an integer number\n"+" "*100)
@@ -21,7 +24,7 @@ def check_integer(value: str, field: str="Value") -> int | None:
 # =============================================================
 
 def file_location() -> Path:
-    BASE_DIR = Path.home() / "Library Management System"
+    BASE_DIR = Path.home() / "Library Database"
     BASE_DIR.mkdir(exist_ok=True)
     return BASE_DIR / "library.db"
 
@@ -29,8 +32,8 @@ def file_location() -> Path:
 # Check for Borrower
 # =============================================================
 
-def check_for_borrower(book: Book) -> str | None:
-    return book.borrower if book.borrower else None
+def check_for_borrower(book: dict[str, Any]) -> str | None:
+    return book["borrower"] if book["borrower"] else None
 
 # =============================================================
 # App Id

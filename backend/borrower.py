@@ -1,4 +1,4 @@
-#borrower.py
+# borrower.py
 
 class Borrower:
     def __init__(self, name: str) -> None:

@@ -1,15 +1,13 @@
-#app.py
-import customtkinter as     ctk
-from   config        import theme
-from   library       import Library
-from  .controller    import Controller
-from   utils         import app_id, icon_extract
-from   widgets       import BookForm, ToolBar, BookList, StatusBar
+# app.py
+import customtkinter as ctk
+from utils  import app_id, icon_extract
+from typing import Any
+from config import theme
 
 
-class LibraryApp(ctk.CTk):
-    def __init__(self, db) -> None:
-        super().__init__()
+class MainWindows(ctk.CTk):
+    def __init__(self, ui_compounds: dict[str, Any], operation) -> None:
+        super().__init__(fg_color= theme.background)
 
     # =============================================================
     # Window Configuration
@@ -19,59 +17,27 @@ class LibraryApp(ctk.CTk):
         self.geometry("1200x800")
         self.minsize(900, 650)
 
-        app_id()
-        icon_extract(self)
-
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
-        self.configure(fg_color= theme.background)
+        self.library = None # Library(db)
+        self.ui_compounds = ui_compounds
+        self.form_operation = operation["add"]
+        self.toolbar_operation = operation["toolbar"]
+        self.card_operation = operation["card"]
+        
 
-        # =============================================================
-        # Data
-        # =============================================================
-
-        self.library = Library(db)
-
-        # =============================================================
-        # GUI Creation
-        # =============================================================
+        app_id()
+        icon_extract(self)
 
         self.create_layout()
         self.create_frame()
+
         self.create_header()
         self.create_sidebar()
-        self.create_form_panel()
-        self.create_books_panel()
+        self.create_main_content()
         self.create_footer()
 
-    # =============================================================
-    # Modules Assignation
-    # =============================================================
-
-        self.controller = Controller(
-            app       = self, 
-            library   = self.library, 
-            book_form = self.book_form, 
-            book_list = self.book_list, 
-            toolbar   = self.tool_bar, 
-            statusbar = self.status_bar )
-
-        self.tool_bar.set_callbacks(
-            on_search = self.controller.search_books, 
-            on_sort   = self.controller.sort_books )
-        
-        self.book_list.set_callbacks(
-            on_edit   = self.controller.edit_book, 
-            on_delete = self.controller.delete_book, 
-            on_return = self.controller.return_book, 
-            on_borrow = self.controller.borrow_book )
-
-        self.controller.set_callback(
-            on_set_edit_mode = self.set_edit_mode )
-
-        self.assign_button_command()
-        self.controller.refresh_books()
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
 # =============================================================
@@ -87,7 +53,7 @@ class LibraryApp(ctk.CTk):
 
         # Main window columns
         self.grid_columnconfigure(0, weight=0)  # Sidebar
-        self.grid_columnconfigure(1, weight=1)  # Main content
+        self.grid_columnconfigure(1, weight=1)  # Main Content
 
 # =============================================================
 # Frame Creation
@@ -95,10 +61,7 @@ class LibraryApp(ctk.CTk):
 
     def create_frame(self) -> None:
 
-    # =============================================================
     # Header Frame
-    # =============================================================
-    
         self.header_frame = ctk.CTkFrame(
             master        = self, 
             height        = 75, 
@@ -108,10 +71,7 @@ class LibraryApp(ctk.CTk):
         self.header_frame.grid(row=0,  column=0, columnspan=2, sticky="news")
         self.header_frame.grid_propagate(False)
 
-    # =============================================================
     # SideBar Frame
-    # =============================================================
-    
         self.sidebar_frame = ctk.CTkFrame(
             master        = self, 
             width         = 230, 
@@ -120,10 +80,7 @@ class LibraryApp(ctk.CTk):
         self.sidebar_frame.grid(row=1, column=0, sticky="news")
         self.sidebar_frame.grid_propagate(False)
 
-    # =============================================================
     # Main Frame
-    # =============================================================
-    
         self.main_frame = ctk.CTkFrame(
             master        = self, 
             corner_radius = 0, 
@@ -134,10 +91,7 @@ class LibraryApp(ctk.CTk):
         self.main_frame.grid_columnconfigure(0, weight=2)
         self.main_frame.grid_columnconfigure(1, weight=3)
 
-    # =============================================================
     # Footer Frame
-    # =============================================================
-    
         self.footer_frame = ctk.CTkFrame(
             master        = self, 
             height        = 40, 
@@ -171,17 +125,14 @@ class LibraryApp(ctk.CTk):
         self.header_status.grid(row=0, column=1, padx=25, sticky="e")
 
 # =============================================================
-#  Creation SideBar
+#  SideBar Creation
 # =============================================================
 
     def create_sidebar(self) -> None:
         self.sidebar_frame.grid_rowconfigure(4, weight=1)
         self.sidebar_frame.grid_columnconfigure(0, weight=1)
 
-    # =========================================================
     # Logo
-    # =========================================================
-
         logo_frame = ctk.CTkFrame(self.sidebar_frame, fg_color = theme.transparent)
         logo_frame.grid(row=0, column=0, padx=20, pady=(25,30), sticky="ew")
         logo_frame.grid_columnconfigure(1, weight=1)
@@ -199,10 +150,7 @@ class LibraryApp(ctk.CTk):
             text_color = theme.text
         ).grid(row=0, column=1, padx=10, sticky="w")
 
-    # =========================================================
     # Navigation Frame
-    # =========================================================
-
         ctk.CTkLabel(
             master     = self.sidebar_frame,
             text       = "NAVIGATION",
@@ -210,10 +158,7 @@ class LibraryApp(ctk.CTk):
             text_color = theme.text_muted
         ).grid(row=1, column=0, padx=20, pady=(0,10), sticky="w")
 
-    # =========================================================
     # Book Button
-    # =========================================================
-
         self.books_button = ctk.CTkButton(
             master        = self.sidebar_frame,
             text          = "📚   Books",
@@ -228,10 +173,7 @@ class LibraryApp(ctk.CTk):
 
         self.books_button.grid(row=2, column=0, padx=12, pady=4, sticky="ew")
 
-    # =========================================================
     # Book Addition Button
-    # =========================================================
-
         self.add_book_button = ctk.CTkButton(
             master        = self.sidebar_frame,
             text          = "➕   Add Book",
@@ -246,10 +188,7 @@ class LibraryApp(ctk.CTk):
 
         self.add_book_button.grid(row=3, column=0, padx=12, pady=4, sticky="ew")
 
-    # =========================================================
     # Information Card
-    # =========================================================
-
         info_card = ctk.CTkFrame(
             master        = self.sidebar_frame, 
             corner_radius = 12,
@@ -269,140 +208,26 @@ class LibraryApp(ctk.CTk):
             justify    = "left",
             font       = ("Segoe UI", 11),
             text_color = theme.text_muted
-        ).pack(anchor="w", padx=15, pady=(0,15))        
+        ).pack(anchor="w", padx=15, pady=(0,15))    
 
 # =============================================================
-#  Creation Form Panel
+#  Main Content
 # =============================================================
-    
-    def create_form_panel(self) -> None:
-
-        self.form_card = ctk.CTkFrame(
-            master        = self.main_frame,
-            corner_radius = 15,
-            border_width  = 1,
-            fg_color      = theme.surface,
-            border_color  = theme.border)
-
-        self.form_card.grid(row=0, column=0, sticky="news")
-        self.form_card.grid_rowconfigure(1, weight=1)
-        self.form_card.grid_columnconfigure(0, weight=1)
-
-    # =========================================================
-    # Form Panel Title
-    # =========================================================
-
-        self.form_title = ctk.CTkLabel(
-            master     = self.form_card,
-            text       = "Book Addition",
-            font       = ("Segoe UI", 20, "bold"),
-            text_color = theme.text)
-        
-        self.form_title.grid(row=0, column=0, padx=20, pady=(20,10), sticky="w")
-
-    # =========================================================
+    def create_main_content(self):
     # Book Form
-    # =========================================================
+        self.book_form = self.ui_compounds["form"](self.main_frame, self.form_operation)
+        self.book_form.grid(row=0, column=0, padx=10, pady=5, sticky="news")
 
-        self.book_form = BookForm(self.form_card)
-        self.book_form.grid(row=1, column=0, padx=20, pady=5, sticky="news")
+    # Book Panel
+        self.book_view = self.ui_compounds["view"](self.main_frame, self.ui_compounds["card"], self.toolbar_operation, self.card_operation)
+        self.book_view.grid(row=0, column=1, padx=20, pady=5, sticky="news")
 
-    # =============================================================
-    # Button Creation
-    # =============================================================
-
-        self.button_frame = ctk.CTkFrame(
-            master   = self.form_card,
-            fg_color = theme.transparent)
-
-        self.button_frame.grid(row=2, column=0, padx=20, pady=(10, 20), sticky="ew")
-
-        self.button_frame.grid_columnconfigure(0, weight=1)
-        self.button_frame.grid_columnconfigure(1, weight=1)
-
-        # Cancel
-        self.cancel_button = ctk.CTkButton(
-            master        = self.button_frame, 
-            text          = "Cancel",   
-            height        = 42,
-            corner_radius = 10,
-            fg_color      = theme.surface_light,
-            hover_color   = theme.border, 
-            font          = ("Segoe UI", 13, "bold"))
-
-        # Addition
-        self.add_button = ctk.CTkButton(
-            master        = self.button_frame, 
-            text          = "Add Book", 
-            height        = 42,
-            corner_radius = 10,
-            fg_color      = theme.accent,
-            hover_color   = theme.accent_hover, 
-            font          = ("Segoe UI", 13, "bold"))
-
-        self.add_button.grid(row=0, column=0, columnspan=2, sticky="ew")
-                
-# =============================================================
-#  Creation Book Panel
-# =============================================================
-    
-    def create_books_panel(self) -> None:
-
-        self.books_card = ctk.CTkFrame(
-            master        = self.main_frame,
-            corner_radius = 15,
-            border_width  = 1,
-            border_color  = theme.border,
-            fg_color      = theme.surface)
-        
-        self.books_card.grid(row=0, column=1, padx=(15,0), sticky="news")
-
-        self.books_card.grid_rowconfigure(2, weight=1)
-        self.books_card.grid_columnconfigure(0, weight=1)
-      
-    # =============================================================
-    #  Book Panel Title
-    # =============================================================
-
-        title_frame = ctk.CTkFrame(
-            master   = self.books_card, 
-            fg_color = theme.transparent)
-          
-        title_frame.grid(row=0, column=0, padx=15, pady=(15,5), sticky="ew")
-
-        ctk.CTkLabel(
-            master     = title_frame,
-            text       = "Books",
-            font       = ("Segoe UI", 20, "bold"),
-            text_color = theme.text 
-        ).pack(anchor="w")
-
-        ctk.CTkLabel(
-            master     = title_frame,
-            text       = "Browse and manage your collection",
-            font       = ("Segoe UI", 11),
-            text_color = theme.text_muted
-        ).pack(anchor="w")
-
-    # =============================================================
-    #  Book Panel Widget
-    # =============================================================
-
-        # ToolBar
-        self.tool_bar = ToolBar(self.books_card)
-        self.tool_bar.grid(row=1, column=0, padx=15, pady=10, sticky="ew")
-
-        # BookList
-        self.book_list = BookList(self.books_card)
-        self.book_list.grid(row=2, column=0, padx=15, pady=(0,15), sticky="news")
-        
-               
 # =============================================================
 #  Creation Footer
 # =============================================================
     
     def create_footer(self) -> None:
-        self.status_bar = StatusBar(self.footer_frame)
+        self.status_bar = self.ui_compounds["status"](self.footer_frame)
         self.status_bar.pack(fill="both", expand=True, padx=15)
 
 # =============================================================
@@ -412,6 +237,8 @@ class LibraryApp(ctk.CTk):
     def assign_button_command(self) -> None:
         self.add_button.configure(command=self.controller.add_book)
         self.cancel_button.configure(command=self.controller.cancel_edit)    
+
+
 
 # =============================================================
 #  Creation
@@ -458,5 +285,30 @@ class LibraryApp(ctk.CTk):
 # =============================================================
 
     def on_close(self) -> None:
-        self.library.db.close()
+        # self.library.db.close()
         self.destroy()
+
+# =============================================================
+    
+    def book_data(self) -> dict[str: Any] | None:
+        return self.book_form.book_data() if self.book_form.book_data is not None else None
+
+    def form_clear(self) -> None:
+        self.book_form.form_clear()
+
+    def set_status(self, message: str) -> None:
+        self.status_bar.set_status(message)
+
+    def display_books(self, books: list[dict[str: Any]]) -> None:
+        self.book_view.display_books(books)
+
+    def edit(self, book: dict[str, Any]) -> None:
+        self.book_form.edit(book)
+    
+    def cancel_edit(self) -> None:
+        self.book_form.cancel()
+    
+    def dialog(self, title: str) -> str:
+        dialog = self.ui_compounds["dialog"](self, title)
+        self.wait_window(dialog)
+        return dialog.get_result()

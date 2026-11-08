@@ -2,7 +2,7 @@
 from .borrower import Borrower
 
 class Book:
-    def __init__(self, title, author, pages, year, available= True, book_id= None) -> None:
+    def __init__(self, book_id, title, author, pages, year, available= True) -> None:
     # =============================================================
     # Custom Exception
     # =============================================================
@@ -32,7 +32,7 @@ class Book:
 # Book Borrow
 # =============================================================
 
-    def borrow_name(self, borrower : Borrower) -> bool:
+    def borrow_name(self, borrower: Borrower) -> bool:
         if self.available:
             self.borrower  = borrower
             self.available = False
@@ -54,7 +54,7 @@ class Book:
 # Book Update
 # =============================================================
 
-    def update(self, other : "Book") -> None:
+    def update(self, other: Book) -> None:
         self.title   =  other.title
         self.author  =  other.author
         self.pages   =  other.pages
