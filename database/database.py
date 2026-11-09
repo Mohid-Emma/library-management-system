@@ -1,7 +1,8 @@
-#database.py
+# database.py
+
 import sqlite3
 from typing import Any
-from utils import file_location, check_for_borrower
+from utils import file_location
 
 
 DB_PATH = file_location()
@@ -84,7 +85,6 @@ class Database:
     # =============================================================
 
     def borrow_book(self, book: dict[str, Any]) -> None:
-        # borrower_name = check_for_borrower(book)
         self.cursor.execute(
         """ UPDATE books 
         SET available=?, borrower_name=? Where id=?""",

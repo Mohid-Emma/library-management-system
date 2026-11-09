@@ -1,16 +1,16 @@
-# book_list.py
+# view.py
 
-import customtkinter as     ctk
+import customtkinter as ctk
 from config import theme
 from typing import Any
 
 
-class BookView(ctk.CTkFrame):
+class View(ctk.CTkFrame):
     def __init__(self, master, b_card, toolbar_op, card_op):
         super().__init__(master, corner_radius = 15, border_width = 1, border_color = theme.border, fg_color = theme.surface)
 
         self.tool_bar = ToolBar(self, toolbar_op)
-        self.book_list = BookList(self, b_card, card_op)
+        self.book_list = List(self, b_card, card_op)
 
         self.create_layout()
         self.create_title()
@@ -137,7 +137,7 @@ class ToolBar(ctk.CTkFrame):
         self.operation["search"]("")
 
 
-class BookList(ctk.CTkScrollableFrame):
+class List(ctk.CTkScrollableFrame):
     def __init__(self, master, b_card, card_op) -> None:
             super().__init__(master, corner_radius= 10,fg_color= theme.background, scrollbar_button_color= theme.surface_light, scrollbar_button_hover_color= theme.border)
 

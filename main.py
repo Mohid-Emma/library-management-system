@@ -1,16 +1,16 @@
 #main.py
 
 from database import Database
-from frontend import MainWindows, BookForm, BookView, BookCard, StatusBar, BorrowerDialog
+from frontend import MainWindows, Form, View, Card, StatusBar, Dialog
 from controller import LibraryApp
 from backend import Library
 
 ui_compounds = {
-   "form"   : BookForm, 
-   "view"   : BookView,
-   "card"   : BookCard, 
+   "form"   : Form,
+   "view"   : View,
+   "card"   : Card, 
    "status" : StatusBar, 
-   "dialog" : BorrowerDialog }
+   "dialog" : Dialog }
 
 
 # =============================================================

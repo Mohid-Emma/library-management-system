@@ -1,9 +1,9 @@
-# book_card.py
+# card.py
 
 import customtkinter as     ctk
 from   config        import theme
 
-class BookCard(ctk.CTkFrame):
+class Card(ctk.CTkFrame):
     def __init__(self, master, book, operation) -> None:
         super().__init__(
             master        = master,

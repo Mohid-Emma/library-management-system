@@ -1,4 +1,4 @@
-# book_form.py
+# form.py
 
 import customtkinter as ctk
 from config  import theme
@@ -6,7 +6,7 @@ from typing  import Any
 from utils   import check_integer
 
 
-class BookForm(ctk.CTkFrame):
+class Form(ctk.CTkFrame):
     def __init__(self, master, operation) -> None:
         super().__init__(master, corner_radius = 15, border_width = 1, fg_color = theme.surface, border_color = theme.border)
 
@@ -198,13 +198,25 @@ class BookForm(ctk.CTkFrame):
     def book_data(self) -> dict[str, Any] | None:
 
         title  = self.title_entry.get().strip()
+        if not title.strip():
+            raise ValueError("Title cannot be empty.")
+        
         author = self.author_entry.get().strip()
+        if not author.strip():
+            raise ValueError("Author cannot be empty.")
+        
         pages  = check_integer(self.pages_entry.get(), "Pages")
         if pages is None:
-            return None
+            raise ValueError("Pages cannot be empty.")
+        if pages <= 0:
+            raise ValueError("Pages must be positive.")
+        
         year = check_integer(self.year_entry.get(), "Year")
         if year is None:
-            return None
+            raise ValueError("Year cannot be empty.")
+        
+        if year <= 0:
+            raise ValueError("Year must be positive.")
         available = bool(self.available_checkbox.get())
         
         return {

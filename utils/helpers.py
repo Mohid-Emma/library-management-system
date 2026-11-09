@@ -32,8 +32,15 @@ def file_location() -> Path:
 # Check for Borrower
 # =============================================================
 
-def check_for_borrower(book: dict[str, Any]) -> str | None:
-    return book["borrower"] if book["borrower"] else None
+def borrower_check(name: str) -> str | None:
+    name = name.strip()
+    if len(name) < 2:
+        raise ValueError("Name should be at least 2 characters long."+ " "*10)
+    if len(name) > 30:
+        raise ValueError("Name is too long.")
+    if not name.replace(" ", "").isalpha():
+        raise ValueError("Only letters are allowed.")
+    return True
 
 # =============================================================
 # App Id

@@ -1,4 +1,5 @@
 # app.py
+
 import customtkinter as ctk
 from utils  import app_id, icon_extract
 from typing import Any
@@ -6,7 +7,7 @@ from config import theme
 
 
 class MainWindows(ctk.CTk):
-    def __init__(self, ui_compounds: dict[str, Any], operation) -> None:
+    def __init__(self, ui_compounds: dict[str, Any], operation: dict[str, Any]) -> None:
         super().__init__(fg_color= theme.background)
 
     # =============================================================
@@ -20,12 +21,11 @@ class MainWindows(ctk.CTk):
         ctk.set_appearance_mode("dark")
         ctk.set_default_color_theme("blue")
 
-        self.library = None # Library(db)
         self.ui_compounds = ui_compounds
         self.form_operation = operation["add"]
         self.toolbar_operation = operation["toolbar"]
-        self.card_operation = operation["card"]
-        
+        self.card_operation = operation["card"]    
+        self.database_close = operation["close"]     
 
         app_id()
         icon_extract(self)
@@ -285,7 +285,7 @@ class MainWindows(ctk.CTk):
 # =============================================================
 
     def on_close(self) -> None:
-        # self.library.db.close()
+        self.database_close()
         self.destroy()
 
 # =============================================================

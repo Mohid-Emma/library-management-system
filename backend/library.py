@@ -9,6 +9,7 @@ class Library:
         self.database.create_table()
         self.current_mode = None
 
+
 # =============================================================
 # Book Find
 # =============================================================
@@ -76,7 +77,14 @@ class Library:
 # Loading Book's Data
 # =============================================================
 
-    def load(self) -> list[dict[str, Any]] :
+    def load(self) -> list[dict[str, Any]]:
         self.books =  self.database.fetch_books()
         return self.books
+    
+# =============================================================
+# Close Databse
+# =============================================================
+
+    def close(self) -> None:
+        self.database.close()
 

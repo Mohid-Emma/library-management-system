@@ -13,10 +13,11 @@ class LibraryApp:
 
         operation = {
             "add"     : self.add_book,
-            "toolbar" : {"search" : self.search_books, "sort" : self.sort_books},
-            "card"    : {"edit"   : self.edit_book, "delete" : self.delete_book,
-                         "return" : self.return_book, "borrow" : self.borrow_book }}
-        
+            "toolbar" : {"search" : self.search_books,"sort" : self.sort_books},
+            "card"    : {"edit"   : self.edit_book,   "delete" : self.delete_book,
+                         "return" : self.return_book, "borrow" : self.borrow_book},
+            "close"   : self.library.close}
+
         self.main_window = main_window(ui_compounds, operation)
         self.refresh_books()
 

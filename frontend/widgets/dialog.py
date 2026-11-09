@@ -1,10 +1,11 @@
-# borrower_dialog.py
+# dialog.py
 
 import customtkinter as ctk
 from config import theme
+from utils import borrower_check
 
 
-class BorrowerDialog(ctk.CTkToplevel):
+class Dialog(ctk.CTkToplevel):
     def __init__(self, master, book_title) -> None:
         super().__init__(master)
 
@@ -131,6 +132,8 @@ class BorrowerDialog(ctk.CTkToplevel):
         if not name:
             self.name_entry.configure(border_name = theme.warning)
             self.name_entry.focus_set()
+            return
+        if not borrower_check(name):
             return
         self.result = name
         self.destroy()
