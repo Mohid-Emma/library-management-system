@@ -1,14 +1,19 @@
 # form.py
 
 import customtkinter as ctk
-from config  import theme
-from typing  import Any
-from utils   import check_integer
+from config import theme
+from typing import Any
+from utils import check_integer
 
 
 class Form(ctk.CTkFrame):
     def __init__(self, master, operation) -> None:
-        super().__init__(master, corner_radius = 15, border_width = 1, fg_color = theme.surface, border_color = theme.border)
+        super().__init__(
+            master         = master, 
+            corner_radius  = 15, 
+            border_width   = 1, 
+            fg_color       = theme.panel, 
+            border_color   = theme.border)
 
         self.current_mode = "addition"
         self.current_book = None
@@ -20,7 +25,7 @@ class Form(ctk.CTkFrame):
         self.create_button()
 
 # =============================================================
-# Create GUI/UI Compounds
+# Create form GUI/UI Compounds
 # =============================================================
 
     def create_layout(self) -> None:
@@ -98,40 +103,31 @@ class Form(ctk.CTkFrame):
         self.button_frame.grid_columnconfigure(0, weight=1)
         self.button_frame.grid_columnconfigure(1, weight=1)
 
-        # Cancel
+        # Cancel Button
         self.cancel_button = ctk.CTkButton(
             master        = self.button_frame, 
             text          = "Cancel",   
             height        = 42,
             corner_radius = 10,
             command       = self.cancel,
-            fg_color      = theme.surface_light,
+            fg_color      = theme.panel_light,
             hover_color   = theme.border, 
             font          = ("Segoe UI", 13, "bold"))
 
         self.cancel_button.grid(row=0, column=0, padx=10, sticky="ew")
 
-        # Addition
+        # Add Button
         self.add_button = ctk.CTkButton(
             master        = self.button_frame, 
             text          = "Add Book", 
             height        = 42,
             corner_radius = 10,
             command       = lambda: self.operation(self.current_mode),
-            fg_color      = theme.accent,
-            hover_color   = theme.accent_hover, 
+            fg_color      = theme.action,
+            hover_color   = theme.action_hover, 
             font          = ("Segoe UI", 13, "bold"))
 
         self.add_button.grid(row=0, column=1, padx=10, sticky="ew")
-    
-# =============================================================
-# Cancel Command
-# =============================================================
-
-    def cancel(self) -> None:
-        if self.current_mode != "addition":
-            self.mode_change("addition")
-        self.form_clear()
 
 # =============================================================
 # Mode Change
@@ -149,6 +145,15 @@ class Form(ctk.CTkFrame):
             self.available_checkbox.deselect()
             self.available_checkbox.configure(state="disabled")  
             self.current_mode = "edition"
+    
+# =============================================================
+# Cancel Command
+# =============================================================
+
+    def cancel(self) -> None:
+        if self.current_mode != "addition":
+            self.mode_change("addition")
+        self.form_clear()
     
 # =============================================================
 # Edit Command

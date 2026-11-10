@@ -6,8 +6,13 @@ from typing import Any
 
 
 class View(ctk.CTkFrame):
-    def __init__(self, master, b_card, toolbar_op, card_op):
-        super().__init__(master, corner_radius = 15, border_width = 1, border_color = theme.border, fg_color = theme.surface)
+    def __init__(self, master: ctk.CTkFrame, b_card: Card, toolbar_op: dict[str, Any], card_op: dict[str, Any]):
+        super().__init__(
+            master        = master, 
+            corner_radius = 15, 
+            border_width  = 1, 
+            border_color  = theme.border, 
+            fg_color      = theme.panel)
 
         self.tool_bar = ToolBar(self, toolbar_op)
         self.book_list = List(self, b_card, card_op)
@@ -15,6 +20,10 @@ class View(ctk.CTkFrame):
         self.create_layout()
         self.create_title()
         self.create_content()
+
+# =============================================================
+# Create View GUI/UI Compounds
+# =============================================================
 
     def create_layout(self) -> None:
         self.grid_rowconfigure(2, weight=1)
@@ -62,7 +71,7 @@ class ToolBar(ctk.CTkFrame):
         self.create_widgets()
 
 # =============================================================
-# Widget Creation
+# Create ToolBar GUI/UI Compounds
 # =============================================================
 
     def create_widgets(self) -> None:
@@ -105,17 +114,16 @@ class ToolBar(ctk.CTkFrame):
             width                = 170,
             corner_radius        = 9,
             font                 = ("Segoe UI", 12),
-            fg_color             = theme.surface_light,
-            button_color         = theme.accent,
-            button_hover_color   = theme.accent_hover,
+            fg_color             = theme.panel_light,
+            button_color         = theme.action,
+            button_hover_color   = theme.action_hover,
             text_color           = theme.text, 
-            dropdown_fg_color    = theme.surface_light,
-            dropdown_hover_color = theme.surface_light,
+            dropdown_fg_color    = theme.panel_light,
+            dropdown_hover_color = theme.panel_light,
             dropdown_text_color  = theme.text)
         
         self.sort_menu.set("Sort by")
         self.sort_menu.grid(row=0, column=1, padx=(0,0))
-
 
 # =============================================================
 # Book Sort
@@ -125,7 +133,7 @@ class ToolBar(ctk.CTkFrame):
         self.operation["sort"](choice)
 
 # =============================================================
-# Search
+# Book Search
 # =============================================================
 
     def on_search_changed(self, _) -> None:
@@ -139,16 +147,16 @@ class ToolBar(ctk.CTkFrame):
 
 class List(ctk.CTkScrollableFrame):
     def __init__(self, master, b_card, card_op) -> None:
-            super().__init__(master, corner_radius= 10,fg_color= theme.background, scrollbar_button_color= theme.surface_light, scrollbar_button_hover_color= theme.border)
+            super().__init__(master, corner_radius= 10,fg_color= theme.background, scrollbar_button_color= theme.panel_light, scrollbar_button_hover_color= theme.border)
 
             self.b_card = b_card
             self.card_op = card_op
             
             self.create_layout()
 
-# ============================================================= 
-# Layout Creation  
-# ============================================================= 
+# =============================================================
+# Create List GUI/UI Compounds
+# =============================================================
 
     def create_layout(self) -> None: 
         self.grid_columnconfigure(0, weight=1)

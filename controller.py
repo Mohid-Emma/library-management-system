@@ -7,7 +7,6 @@ from typing  import Any
 class LibraryApp:
     def __init__(self, main_window, ui_compounds, database, library) -> None:
 
-
         self.current_book = None
         self.library = library(self, database)
 
@@ -131,7 +130,7 @@ class LibraryApp:
         self.refresh_books()
 
 # =============================================================
-# Search for Book
+# Book Search 
 # =============================================================
 
     def search_books(self, query : str) -> None:

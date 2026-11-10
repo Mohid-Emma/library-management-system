@@ -1,4 +1,4 @@
-# app.py
+# main_windows.py
 
 import customtkinter as ctk
 from utils  import app_id, icon_extract
@@ -9,10 +9,6 @@ from config import theme
 class MainWindows(ctk.CTk):
     def __init__(self, ui_compounds: dict[str, Any], operation: dict[str, Any]) -> None:
         super().__init__(fg_color= theme.background)
-
-    # =============================================================
-    # Window Configuration
-    # =============================================================
 
         self.title("Library Management System")
         self.geometry("1200x800")
@@ -41,7 +37,7 @@ class MainWindows(ctk.CTk):
         self.protocol("WM_DELETE_WINDOW", self.on_close)
 
 # =============================================================
-# Layout Creation
+# Create Main Windows GUI/UI Compounds
 # =============================================================
 
     def create_layout(self) -> None:
@@ -66,7 +62,7 @@ class MainWindows(ctk.CTk):
             master        = self, 
             height        = 75, 
             corner_radius = 0, 
-            fg_color      = theme.surface)
+            fg_color      = theme.panel)
         
         self.header_frame.grid(row=0,  column=0, columnspan=2, sticky="news")
         self.header_frame.grid_propagate(False)
@@ -96,12 +92,12 @@ class MainWindows(ctk.CTk):
             master        = self, 
             height        = 40, 
             corner_radius = 0, 
-            fg_color      = theme.surface)
+            fg_color      = theme.panel)
         self.footer_frame.grid(row=2,  column=0, columnspan=2, sticky="news")
         self.footer_frame.grid_propagate(False)
 
 # =============================================================
-# Header Creation
+# Header 
 # =============================================================
     
     def create_header(self) -> None:
@@ -125,7 +121,7 @@ class MainWindows(ctk.CTk):
         self.header_status.grid(row=0, column=1, padx=25, sticky="e")
 
 # =============================================================
-#  SideBar Creation
+#  SideBar
 # =============================================================
 
     def create_sidebar(self) -> None:
@@ -165,9 +161,9 @@ class MainWindows(ctk.CTk):
             anchor        = "w",
             height        = 45,
             corner_radius = 10,
-            fg_color      = theme.accent,
+            fg_color      = theme.action,
             text_color    = theme.text,
-            hover_color   = theme.accent_hover,
+            hover_color   = theme.action_hover,
             font          = ("Segoe UI", 10, "bold"),
             command       = self.show_books )
 
@@ -182,7 +178,7 @@ class MainWindows(ctk.CTk):
             corner_radius = 10,
             fg_color      = theme.transparent,
             text_color    = theme.text,
-            hover_color   = theme.surface,
+            hover_color   = theme.panel,
             font          = ("Segoe UI", 13),
             command       = self.show_add_books )
 
@@ -192,7 +188,7 @@ class MainWindows(ctk.CTk):
         info_card = ctk.CTkFrame(
             master        = self.sidebar_frame, 
             corner_radius = 12,
-            fg_color      = theme.surface)
+            fg_color      = theme.panel)
         info_card.grid(row=5, column=0, padx=15, pady=20, sticky="ew")
 
         ctk.CTkLabel(
@@ -223,71 +219,29 @@ class MainWindows(ctk.CTk):
         self.book_view.grid(row=0, column=1, padx=20, pady=5, sticky="news")
 
 # =============================================================
-#  Creation Footer
+#  Footer
 # =============================================================
     
     def create_footer(self) -> None:
         self.status_bar = self.ui_compounds["status"](self.footer_frame)
-        self.status_bar.pack(fill="both", expand=True, padx=15)
+        self.status_bar.pack(fill="both", expand=True, padx=15) 
 
 # =============================================================
-# Assign Button Cammand
-# =============================================================
-
-    def assign_button_command(self) -> None:
-        self.add_button.configure(command=self.controller.add_book)
-        self.cancel_button.configure(command=self.controller.cancel_edit)    
-
-
-
-# =============================================================
-#  Creation
+#  Sidebar Button
 # =============================================================
 
     def show_books(self) -> None:
-        self.books_button.configure(fg_color = theme.accent)
+        self.books_button.configure(fg_color = theme.action)
         self.add_book_button.configure(fg_color = theme.transparent)
 
     def show_add_books(self) -> None:
-        self.add_book_button.configure(fg_color = theme.surface)
+        self.add_book_button.configure(fg_color = theme.panel)
         self.books_button.configure(fg_color = theme.transparent)
 
         self.book_form.title_entry.focus_set()
-        
-# =============================================================
-# Edit Mode GUI
-# =============================================================
-
-    def set_edit_mode(self, mode : bool) -> None:
-
-        if mode:            
-            self.form_title.configure(    text = "Edit Book")
-            self.title_label.configure(   text = "🟡  Editing Book")
-            self.header_status.configure( text = "Editing")
-            self.title("Editing Book - Library Management System")
-
-            self.cancel_button.grid(row= 0, column = 0, padx=(0,5), sticky="ew")
-            self.add_button.grid(   row= 0, column = 1, padx=(5,0), sticky="ew")
-
-            self.add_button.configure(text = "Save Changes")
-
-        else:
-            self.cancel_button.grid_forget()
-            self.add_button.grid(row= 0, column = 0, columnspan= 2, padx=0, sticky="ew")
-            self.add_button.configure(    text = "Add Book")
-            self.form_title.configure(    text = "Add New Book")
-            self.title_label.configure(   text = "📚  Library Management System")
-            self.header_status.configure( text = "Library Manager")
-            self.title("Library Management System")
 
 # =============================================================
-# System Close 
-# =============================================================
-
-    def on_close(self) -> None:
-        self.database_close()
-        self.destroy()
-
+# Callback Command 
 # =============================================================
     
     def book_data(self) -> dict[str: Any] | None:
@@ -312,3 +266,11 @@ class MainWindows(ctk.CTk):
         dialog = self.ui_compounds["dialog"](self, title)
         self.wait_window(dialog)
         return dialog.get_result()
+
+# =============================================================
+# System Close 
+# =============================================================
+
+    def on_close(self) -> None:
+        self.database_close()
+        self.destroy()

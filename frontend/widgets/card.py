@@ -1,15 +1,16 @@
 # card.py
 
-import customtkinter as     ctk
-from   config        import theme
+import customtkinter as ctk
+from typing import Any
+from config import theme
 
 class Card(ctk.CTkFrame):
-    def __init__(self, master, book, operation) -> None:
+    def __init__(self, master: ctk.CTkFrame, book: dict[str, Any], operation: dict[str, Any]) -> None:
         super().__init__(
             master        = master,
             corner_radius = 12,
             border_width  = 1,
-            fg_color      = theme.surface,
+            fg_color      = theme.panel,
             border_color  = theme.border)
         
         self.book      = book
@@ -20,7 +21,7 @@ class Card(ctk.CTkFrame):
         self.create_buttons()
 
 # =============================================================
-# Layout Creation
+# Create Card GUI/UI Compounds
 # =============================================================
 
     def create_layout(self) -> None:
@@ -28,7 +29,7 @@ class Card(ctk.CTkFrame):
         self.grid_columnconfigure(1, weight=0)
 
 # =============================================================
-# Book Information
+# Book Card
 # =============================================================
 
     def create_book_card(self) -> None:
@@ -39,11 +40,7 @@ class Card(ctk.CTkFrame):
 
         card_frame.grid_columnconfigure(0, weight=1)
     
-    # =============================================================
-    # Book Title and Author 
-    # =============================================================
-
-        # Title
+    # Book Title
         ctk.CTkLabel(
             master     = card_frame,
             text       = f"📖  {self.book['title']}", 
@@ -52,7 +49,7 @@ class Card(ctk.CTkFrame):
             anchor     = "w"
         ).grid(row=0, column=0, sticky="ew", pady=(0,5))
 
-        # Author
+    # Book Author
         ctk.CTkLabel(
             master     = card_frame,
             text       = f"By {self.book['author']}", 
@@ -61,9 +58,7 @@ class Card(ctk.CTkFrame):
             anchor     = "w"
         ).grid(row=1, column=0, sticky="ew", pady=(0,12))
 
-    # =============================================================
-    # Details
-    # =============================================================
+    # Book Pages and Year 
 
         details_frame = ctk.CTkFrame(
             master   = card_frame,
@@ -74,10 +69,7 @@ class Card(ctk.CTkFrame):
         self.create_detail(details_frame, "Pages", str(self.book['pages']), 0)
         self.create_detail(details_frame, "Year" , str(self.book['year']) , 1)
 
-    # =============================================================
     # Status
-    # =============================================================
-
         if self.book['available']:
             status_text  = "● Available"
             status_color = theme.success
@@ -97,7 +89,6 @@ class Card(ctk.CTkFrame):
         if self.book['borrower']:
 
         # Borrower
-
             ctk.CTkLabel(
             master     = card_frame,
             text       = f"Borrowed by {self.book['borrower']}", 
@@ -110,7 +101,7 @@ class Card(ctk.CTkFrame):
 # Details Creation
 # =============================================================
 
-    def create_detail(self, parent, label : str, value : str, column : int) -> None:
+    def create_detail(self, parent, label: str, value: str, column: int) -> None:
 
         frame = ctk.CTkFrame(
             master   = parent,
@@ -145,26 +136,20 @@ class Card(ctk.CTkFrame):
             fg_color = theme.transparent)
         button_frame.grid(row=0, column=1, padx=15, pady=15, sticky="e") 
 
-    # =============================================================
     # Edit Button
-    # =============================================================
-
         self.edit_button = ctk.CTkButton(
             master        = button_frame, 
             text          = "Edit",
             width         = 90,
             height        = 35,
             corner_radius = 8, 
-            fg_color      = theme.accent,
-            hover_color   = theme.accent_hover,
+            fg_color      = theme.action,
+            hover_color   = theme.action_hover,
             font          = ("Segoe UI", 11, "bold"),
             command       = lambda: self.operation["edit"](self.book))
         self.edit_button.pack(pady=(0,7))
 
-    # =============================================================
     # Delete Button
-    # =============================================================
-
         self.delete_button = ctk.CTkButton(
             master        = button_frame, 
             text          = "Delete",
@@ -177,26 +162,20 @@ class Card(ctk.CTkFrame):
             command       = lambda: self.operation["delete"](self.book))
         self.delete_button.pack(pady=7)
 
-    # =============================================================
     # Return Button
-    # =============================================================
-
         self.return_button = ctk.CTkButton(
             master        = button_frame, 
             text          = "Return",
             width         = 90,
             height        = 35,
             corner_radius = 8, 
-            fg_color      = theme.surface_light,
+            fg_color      = theme.panel_light,
             hover_color   = theme.border,
             font          = ("Segoe UI", 11, "bold"),
             command       = lambda: self.operation["return"](self.book))
         self.return_button.pack(pady=7)
 
-    # =============================================================
     # Borrow Button
-    # =============================================================
-
         self.borrow_button = ctk.CTkButton(
             master        = button_frame, 
             text          = "Borrow",
@@ -209,14 +188,11 @@ class Card(ctk.CTkFrame):
             command       = lambda: self.operation["borrow"](self.book))
         self.borrow_button.pack(pady=(7,0))
 
-    # =============================================================
     # Availablitily
-    # =============================================================
-
         if self.book['available']: 
             self.return_button.configure(
                 state       = "disabled",
-                fg_color    = theme.surface_light,
+                fg_color    = theme.panel_light,
                 hover_color = theme.border) 
             self.borrow_button.configure(
                 fg_color    = theme.success,
@@ -224,7 +200,7 @@ class Card(ctk.CTkFrame):
         else:
             self.borrow_button.configure(
                 state       = "disabled",
-                fg_color    = theme.surface_light,
+                fg_color    = theme.panel_light,
                 hover_color = theme.border) 
             self.return_button.configure(
                 fg_color    = theme.success,

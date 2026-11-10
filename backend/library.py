@@ -1,6 +1,5 @@
 # library.py
 from typing import Any
-
     
 class Library:
     def __init__(self, master, database) -> None:
@@ -10,20 +9,14 @@ class Library:
         self.current_mode = None
 
 
-# =============================================================
-# Book Find
-# =============================================================
-
+    # Book Find
     def find_book(self, title: str) -> dict[str, Any] | None:
         for book in self.books:
             if book["title"].casefold() == title.casefold():
                 return book
         return None
     
-# =============================================================
-# Book Addition
-# =============================================================
-
+    # Book Addition
     def add_book(self, book: dict[str, Any]) -> bool:
         if self.find_book(book["title"]):
             return False
@@ -31,26 +24,21 @@ class Library:
             return False
         return True
 
+    # Book Edition
     def edit_book(self, book: dict[str, Any]) -> bool:
         if self.find_book(book["title"]):
             return False
         self.database.update_book(book)
         return True
 
-# =============================================================
-# Book Delection
-# =============================================================
-
+    # Book Delection
     def delete_book(self, book: dict[str, Any]) -> bool:
         if book in self.books:
             self.database.delete_book(book)
             return True
         return False
 
-# =============================================================
-# Book Borrow
-# =============================================================
-
+    # Book Borrow
     def borrow_book(self, book: dict[str, Any], borrower: str) -> bool:
         if book["available"]:
             book.update({
@@ -60,10 +48,7 @@ class Library:
             return True
         return False
     
-# =============================================================
-# Book Retuen
-# =============================================================
-
+    # Book Retuen
     def return_book(self, book: dict[str, Any]) -> bool:
         if not book["available"]:
             book.update({
@@ -73,18 +58,12 @@ class Library:
             return True
         return False
     
-# =============================================================
-# Loading Book's Data
-# =============================================================
-
+    # Loading Book's Data
     def load(self) -> list[dict[str, Any]]:
         self.books =  self.database.fetch_books()
         return self.books
     
-# =============================================================
-# Close Databse
-# =============================================================
-
+    # Close Databse
     def close(self) -> None:
         self.database.close()
 

@@ -6,15 +6,11 @@ from utils import borrower_check
 
 
 class Dialog(ctk.CTkToplevel):
-    def __init__(self, master, book_title) -> None:
+    def __init__(self, master: ctk.CTkFrame, book_title: str) -> None:
         super().__init__(master)
 
         self.result = None 
-
-    # =============================================================
-    # Window Configuration
-    # =============================================================
-
+        
         self.title("Borrow Book")
         self.geometry("500x360")
         self.resizable(False, False)
@@ -26,7 +22,7 @@ class Dialog(ctk.CTkToplevel):
         self.create_widgets(book_title)
 
 # =============================================================
-# GUI/UI
+# Create Dialog GUI/UI Compounds
 # =============================================================
 
     def create_widgets(self, book_title : str) -> None:
@@ -39,7 +35,7 @@ class Dialog(ctk.CTkToplevel):
             corner_radius = 15,
             border_width  = 1,
             border_color  = theme.border,
-            fg_color      = theme.surface)
+            fg_color      = theme.panel)
         self.card.grid(row=0, column=0, padx=25, pady=25, sticky="news")
 
         self.card.grid_columnconfigure(0, weight=1)
@@ -52,7 +48,7 @@ class Dialog(ctk.CTkToplevel):
             text_color = theme.text
         ).grid(row=0, column=0, padx=25, pady=(25,5), sticky="w")
 
-    # Book
+    # Book Title
         ctk.CTkLabel(
             master     = self.card,
             text       = book_title,
@@ -69,6 +65,7 @@ class Dialog(ctk.CTkToplevel):
             text_color = theme.text,
         ).grid(row=2, column=0, padx=25, pady=(0,5), sticky="w")
 
+    # Name Entry
         self.name_entry = ctk.CTkEntry(
             master                 = self.card, 
             placeholder_text       = "Enter Borrower Name",
@@ -95,18 +92,20 @@ class Dialog(ctk.CTkToplevel):
         button_frame.columnconfigure(0, weight=1)
         button_frame.columnconfigure(1, weight=1)
 
+    # Cancel Button
         self.cancel_button = ctk.CTkButton(
             master        = button_frame, 
             text          = "Cancel",
             height        = 40,
             corner_radius = 9, 
             fg_color      = theme.border,
-            hover_color   = theme.surface_light,
+            hover_color   = theme.panel_light,
             text_color    = theme.text,
             font          = ("Segoe UI", 12, "bold"),
             command       = self.cancel)
         self.cancel_button.grid(row=0, column=0, padx=(0,5), sticky="ew")
 
+    # Borrow Button
         self.borrow_button = ctk.CTkButton(
             master        = button_frame, 
             text          = "Borrow Book",
@@ -123,9 +122,9 @@ class Dialog(ctk.CTkToplevel):
         self.bind("<Return>", lambda event: self.confirm())
         self.bind("<Escape>", lambda event: self.cancel())
 
-# ============================================================= 
-# Confirm 
-# =============================================================
+    # ============================================================= 
+    # Confirm 
+    # =============================================================
 
     def confirm(self) -> None:
         name = self.name_entry.get().strip()
@@ -138,17 +137,17 @@ class Dialog(ctk.CTkToplevel):
         self.result = name
         self.destroy()
 
-# =============================================================
-# Cancel 
-# =============================================================
+    # =============================================================
+    # Cancel 
+    # =============================================================
 
     def cancel(self) -> None:
         self.result = None
         self.destroy()
 
-# =============================================================
-# Result
-# =============================================================
+    # =============================================================
+    # Result
+    # =============================================================
 
     def get_result(self) -> str:
         return self.result

@@ -3,8 +3,8 @@ import customtkinter as ctk
 from config import theme
 
 class StatusBar(ctk.CTkFrame):
-    def __init__(self, master) -> None:
-        super().__init__(master, fg_color= theme.surface_light)
+    def __init__(self, master: ctk.CTkFrame) -> None:
+        super().__init__(master, fg_color= theme.panel_light)
 
         self.status_label = ctk.CTkLabel(self, text="🟢 Ready", anchor="w")
         self.status_label.pack(fill="x", padx=10)

@@ -1,22 +1,59 @@
 # theme.py
 
-border        = "#334155"
-background    = "#0F172A"
-sidebar       = "#111827"
-surface       = "#1E293B"
-surface_hover = "#334155"
-surface_light = "#273449"
+# Backgrounds
+background    = "#06172D"
+sidebar       = "#081B34"
+panel         = "#0F294C"
+panel_hover   = "#334155"
+panel_light   = "#142F52"
 
-accent        = "#3B82F6"
-accent_hover  = "#2563EB"
+# Borders
+border        = "#204B65"
 
-text          = "#F8FAFC"
-text_muted    = "#94A3B8"
+# Actions
+action        = "#0569EA"
+action_hover  = "#1B88F7"
 
+# Text
+text          = "#E7F0F8"
+text_muted    = "#91B0DA"
+
+# Status
 success       = "#22C55E"
 success_hover = "#1EAD53"
 danger        = "#EF4444"
 danger_hover  = "#D43A3A"
 warning       = "#F59E0B"
 
-transparent   =   "transparent"
+# Transparent 
+transparent   = "transparent"
+
+
+
+# # Backgrounds
+# background    = "#0F172A"
+# sidebar       = "#111827"
+# panel       = "#1E293B"
+# panel_hover = "#334155"
+# panel_light = "#273449"
+
+# # Borders
+# border        = "#334155"
+
+# # Actions
+# action        = "#3B82F6"
+# action_hover  = "#2563EB"
+
+# # Text
+# text          = "#F8FAFC"
+# text_muted    = "#94A3B8"
+
+# # Status
+# success       = "#22C55E"
+# success_hover = "#1EAD53"
+# danger        = "#EF4444"
+# danger_hover  = "#D43A3A"
+# warning       = "#F59E0B"
+
+# # Transparent 
+# transparent   =   "transparent"
